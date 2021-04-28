@@ -9,9 +9,9 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key/cloud_translation_api_key.
 // Creates a client
 const translate = new Translate();
 
-console.log('enter text to translate: ');
+console.log('Enter text to translate: ');
 const text = prompt();
-console.log('enter language to translate to (German: de, French: fr, English: en etc): ')
+console.log('Enter language to translate to (German: de, French: fr, English: en etc): ')
 const target = prompt();
 
 async function translateText() {
