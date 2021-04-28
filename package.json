@@ -1,0 +1,15 @@
+{
+  "name": "cloudtranslation",
+  "version": "1.0.0",
+  "description": "Google Cloud Translation API demo",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "KaneSwartz",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/translate": "^6.2.0",
+    "prompt-sync": "^4.2.0"
+  }
+}
