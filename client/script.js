@@ -1,31 +1,40 @@
-let ws = new WebSocket('ws://' + window.location.hostname + ':' + (window.location.port || '80'));
-const textToTranslate = document.querySelector('#text-to-translate');
-const translatedText = document.querySelector('#translated-text');
-const languageSelector = document.querySelector('#language-selector');
-const translateServerAddress = document.querySelector('#translate-server-address');
-const serverAddressUpdate = document.querySelector('#server-address-update');
+let WS;
+const EL = {};
 
 function toServer() {
-  ws.send(JSON.stringify({
-    text: textToTranslate.value,
-    target: languageSelector.value
+  WS.send(JSON.stringify({
+    text: EL.textToTranslate.value,
+    target: EL.languageSelector.value
   }));
 }
 
 function fromServer(e) {
-  translatedText.textContent = e.data;
+  EL.translatedText.textContent = e.data;
 }
 
 function updateWebSocket() {
-  ws = new WebSocket('ws://' + translateServerAddress.value);
-  ws.addEventListener('message', fromServer);
+  WS = new WebSocket('ws://' + EL.translateServerAddress.value);
+  WS.addEventListener('message', fromServer);
+}
+
+function initElements() {
+  EL.textToTranslate = document.querySelector('#text-to-translate');
+  EL.translatedText = document.querySelector('#translated-text');
+  EL.languageSelector = document.querySelector('#language-selector');
+  EL.translateServerAddress = document.querySelector('#translate-server-address');
+  EL.serverAddressUpdate = document.querySelector('#server-address-update');
+}
+
+function addEventListeners() {
+  EL.textToTranslate.addEventListener('keyup', toServer);
+  EL.languageSelector.addEventListener('change', toServer);
+  EL.serverAddressUpdate.addEventListener('click', updateWebSocket);
 }
 
 function init() {
-  translateServerAddress.value = window.location.hostname + ':' + (window.location.port || '80');
-  textToTranslate.addEventListener('keyup', toServer);
-  languageSelector.addEventListener('change', toServer);
-  serverAddressUpdate.addEventListener('click', updateWebSocket);
+  initElements();
+  EL.translateServerAddress.value = window.location.hostname + ':' + (window.location.port || '80');
+  addEventListeners();
   updateWebSocket();
 }
 
