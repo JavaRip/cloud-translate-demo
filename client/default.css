@@ -5,11 +5,12 @@ body {
 }
 
 #auto-translate,
-#manual-translate {
+#manual-translate,
+#config {
   display: grid;
   row-gap: 1em;
   width: 30rem;
-  margin: 1em 0;
+  margin: 1rem 1rem;
 }
 
 #auto-translate input[type=number] {
@@ -20,3 +21,6 @@ body {
   width: 10rem;
 }
 
+#translate-server-address {
+  height: 1rem;
+}
