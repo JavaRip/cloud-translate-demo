@@ -1,45 +1,94 @@
-<!doctype html>
-<title>Cloud translate socket test</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="default.css">
+  <title>Cloud Translate Dashboard</title>
+</head>
 
-<div>
-  <p>Text to Translate:</p>
-  <textarea id=textToTranslate></textarea>
-</div>
+<body>
+<div id="manual-translate">
 
-<label for=languageSelector>Select language to translate to:</label>
+  <label for="text-to-translate">Text to Translate:</label>
+  <textarea id="text-to-translate"></textarea>
 
-<select name=language id=languageSelector>
-    <option value=en>English</option>
-    <option value=fr>French</option>
-    <option value=de>German</option>
-    <option value=zh-cn>Chinese</option>
-</select>
+  <label for="language-selector">Select language to translate to:</label>
 
-<div>
+  <select name="language" id="language-selector">
+    <option value="am">Amharic</option>
+    <option value="ar">Arabic</option>
+    <option value="eu">Basque</option>
+    <option value="bn">Bengali</option>
+    <option value="bg">Bulgarian</option>
+    <option value="ca">Catalan</option>
+    <option value="zh-CN">Chinese (PRC)</option>
+    <option value="zh-TW">Chinese (Taiwan)</option>
+    <option value="chr">Cherokee</option>
+    <option value="hr">Croatian</option>
+    <option value="cs">Czech</option>
+    <option value="da">Danish</option>
+    <option value="nl">Dutch</option>
+    <option value="en-GB">English (UK)</option>
+    <option value="en">English (US)</option>
+    <option value="et">Estonian</option>
+    <option value="fr">French</option>
+    <option value="fi">Finnish</option>
+    <option value="fil">Filipino</option>
+    <option value="de">German</option>
+    <option value="el">Greek</option>
+    <option value="gu">Gujarati</option>
+    <option value="iw">Hebrew</option>
+    <option value="hi">Hindi</option>
+    <option value="hu">Hungarian</option>
+    <option value="it">Italian</option>
+    <option value="id">Indonesian</option>
+    <option value="is">Icelandic</option>
+    <option value="ja">Japanese</option>
+    <option value="kn">Kannada</option>
+    <option value="ko">Korean</option>
+    <option value="lv">Latvian</option>
+    <option value="lt">Lithuanian</option>
+    <option value="ms">Malay</option>
+    <option value="ml">Malayalam</option>
+    <option value="mr">Marathi</option>
+    <option value="no">Norwegian</option>
+    <option value="pl">Polish</option>
+    <option value="pt-BR">Portuguese (Brazil)</option>
+    <option value="pt-PT">Portuguese (Portugal)</option>
+    <option value="ro">Romanian</option>
+    <option value="ru">Russian</option>
+    <option value="sr">Serbian</option>
+    <option value="sv">Swedish</option>
+    <option value="sw">Swahili</option>
+    <option value="es">Spanish</option>
+    <option value="sk">Slovak</option>
+    <option value="sl">Slovenian</option>
+    <option value="ta">Tamil</option>
+    <option value="te">Telugu</option>
+    <option value="th">Thai</option>
+    <option value="tr">Turkish</option>
+    <option value="uk">Ukrainian</option>
+    <option value="ur">Urdu</option>
+    <option value="vi">Vietnamese</option>
+    <option value="cy">Welsh</option>
+  </select>
+
   <p>Translated Text:</p>
-  <textarea id=translatedText></textarea>
+  <p id="translated-text"></p>
+
 </div>
 
-<script>
-  const ws = new WebSocket('ws://' + window.location.hostname + ':' +
-    (window.location.port || 80) + '/');
-  const textToTranslate = document.querySelector('#textToTranslate');
-  const translatedText = document.querySelector('#translatedText');
-  const languageSelector = document.querySelector('#languageSelector');
+<div id="auto-translate">
 
-  function toServer(e) {
-    ws.send(JSON.stringify({
-      text: textToTranslate.value,
-      target: languageSelector.value
-    }));
-  }
+  <label for="number-of-speakers">How many speakers to simulate:</label>
+  <input type="number" id="number-of-speakers"></input>
 
-  function fromServer(e) {
-    translatedText.value = e.data;
-    console.log(e.data);
-  }
+  <label for"time">How long to simulate the speakers for (minutes):</label>
+  <input type="number" id="time"></input>
 
-  textToTranslate.addEventListener('keyup', toServer);
-  languageSelector.addEventListener('change', toServer);
-  ws.addEventListener('message', fromServer);
-</script>
+  <button>Start Simulation</button>
+
+</div>
+
+</body>
+<script src="script.js"></script>

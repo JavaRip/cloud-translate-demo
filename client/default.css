@@ -1,0 +1,22 @@
+body {
+  display: flex;
+  justify-content: space-around;
+  max-width: 70rem;
+}
+
+#auto-translate,
+#manual-translate {
+  display: grid;
+  row-gap: 1em;
+  width: 30rem;
+  margin: 1em 0;
+}
+
+#auto-translate input[type=number] {
+  width: 3rem;
+}
+
+#language-selector {
+  width: 10rem;
+}
+
