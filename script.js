@@ -1,23 +1,24 @@
 // code adapted from https://cloud.google.com/translate/docs/basic/translating-text#translate_translate_text-nodejs
 // Imports the Google Cloud client library
-const { Translate } = require('@google-cloud/translate').v2;
-const ws = require('ws');
-const express = require('express');
-const http = require('http');
+import ws from 'ws';
+import express from 'express';
+import http from 'http';
+import fs from 'fs';
+import Translate from '@google-cloud/translate';
+const translator = new Translate.v2.Translate();
 
-const PORT = process.env.PORT || 9999;
+// setup express server
 const app = express();
 app.use(express.static('client'));
 const server = http.createServer(app);
 
-// put filepath to your credentials here
-process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key/cloud_translation_api_key.json';
+// create api key file for GOOGLE_APPLICATION_CREDENTIALS
+fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
+process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key.json';
 
-// Creates a client
-const translate = new Translate();
-
+// websocket functions
 async function translateText(text, target) {
-  let [translations] = await translate.translate(text, target);
+  let [translations] = await translator.translate(text, target);
   translations = Array.isArray(translations) ? translations : [translations];
   return translations[0];
 }
@@ -30,7 +31,10 @@ function listener(socket) {
   });
 }
 
+// websocket init
 const wsServer = new ws.Server({ server: server });
 wsServer.on('connection', listener);
 
+// expose ports and websocket
+const PORT = process.env.PORT || 9999;
 server.listen(PORT, () => console.log(`server started on port ${PORT}`));
