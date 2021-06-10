@@ -13,7 +13,9 @@ app.use(express.static('client'));
 const server = http.createServer(app);
 
 // create api key file for GOOGLE_APPLICATION_CREDENTIALS
-fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
+if (!fs.existsSync('api_key.json')) {
+  fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
+}
 process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key.json';
 
 // websocket functions
