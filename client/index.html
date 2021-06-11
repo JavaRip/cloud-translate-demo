@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="default.css">
+  <title>Cloud Translate Dashboard</title>
+</head>
+
+<body>
+
+<div id="config">
+  <span>
+    <label for="translate-server-address">Translator server address:</label>
+    <input type="text" id="translate-server-address"></input>
+  </span>
+
+  <button id="server-address-update">Update Server Address</button>
+</div>
+
+<div id="manual-translate">
+  <label for="text-to-translate">Text to Translate:</label>
+  <textarea id="text-to-translate"></textarea>
+
+  <label for="language-selector">Select language to translate to:</label>
+
+  <select name="language" id="language-selector"></select>
+
+  <p>Translated Text:</p>
+  <p id="translated-text"></p>
+</div>
+
+<div id="auto-translate">
+  <span>
+    <label for="number-of-speakers">How many speakers to simulate:</label>
+    <input type="number" id="number-of-speakers"></input>
+  </span>
+
+  <button id="start-simulation">Start Simulation</button>
+</div>
+
+</body>
+<script src="script.js"></script>
