@@ -1,45 +1,21 @@
-let WS;
 const EL = {};
+let MANUALTRANSLATOR = null;
+let SIMULATOR = null;
+import { Client } from './classes/client.js';
+import { ManualTranslator } from './classes/manualTranslator.js';
+import { Simulator } from './classes/simulator.js';
 import { languages as LANGUAGECODES } from './data/languageCodes.js';
-
-function toServer() {
-  WS.send(JSON.stringify({
-    text: EL.textToTranslate.value,
-    target: EL.languageSelector.value
-  }));
-}
-
-function fromServer(event) {
-  EL.translatedText.textContent = event.data;
-}
-
-function updateWebSocket() {
-  WS = new WebSocket('ws://' + EL.translateServerAddress.value);
-  WS.addEventListener('message', fromServer);
-}
+import { textList as TEXTLIST } from './data/sampleTexts.js';
 
 function runSimulation() {
   const clients = [];
   const numberOfClients = EL.numberOfSpeakers.value;
-  const translatorWs = 'ws://' + EL.translateServerAddress.value;
-  const textList = [
-    'hello there',
-    'thanks for reading the nonsense I am writing',
-    'Really I am flattered and surprised! That you made it this far',
-    'I would put something entertaining here',
-    'but I would not want to encourage you to waste your time',
-    'I did hear a good joke the othe day but I cannot quite remember how it went',
-    'I think it was something like',
-    'I actually really cannot remember lol but it was pretty good',
-    'anyway I do remember one I have just told it a million times already to everyone',
-    'what kind of tree can you fit in your hand?',
-    'a palm tree',
-  ];
+  const translatorWs = getWsAddr;
 
   for (let i = 0; i < numberOfClients; i += 1) {
     const targetLang = LANGUAGECODES[Math.floor(Math.random() * LANGUAGECODES.length)].code;
     const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
-    const newClient = new client([...textList], translatorWs, targetLang, translateRate);
+    const newClient = new Client([...TEXTLIST], translatorWs, targetLang, translateRate);
     newClient.init();
     clients.push(newClient);
   }
@@ -54,6 +30,10 @@ function initLanguageSelector() {
   }
 }
 
+function getWsAddr() {
+  return 'ws://' + EL.translateServerAddress.value;
+}
+
 function initElements() {
   EL.textToTranslate = document.querySelector('#text-to-translate');
   EL.translatedText = document.querySelector('#translated-text');
@@ -65,9 +45,18 @@ function initElements() {
 }
 
 function addEventListeners() {
-  EL.textToTranslate.addEventListener('keyup', toServer);
-  EL.languageSelector.addEventListener('change', toServer);
-  EL.serverAddressUpdate.addEventListener('click', updateWebSocket);
+  EL.textToTranslate.addEventListener('keyup', () => {
+    MANUALTRANSLATOR.requestTranslation()
+  });
+
+  EL.languageSelector.addEventListener('change', () => {
+    MANUALTRANSLATOR.requestTranslation()
+  });
+
+  EL.serverAddressUpdate.addEventListener('click', () => {
+    MANUALTRANSLATOR.updateWebSocket(getWsAddr());
+  });
+
   EL.startSimulation.addEventListener('click', runSimulation);
 }
 
@@ -75,53 +64,10 @@ function init() {
   initElements();
   initLanguageSelector();
   EL.translateServerAddress.value = window.location.hostname + ':' + (window.location.port || '80');
+  MANUALTRANSLATOR = new ManualTranslator(EL.textToTranslate, EL.translatedText, EL.languageSelector, getWsAddr());
   addEventListeners();
-  updateWebSocket();
 }
 
 window.addEventListener('load', init)
 
-class client {
-  constructor(textArray, translatorWebsocket, targetLanguage, textRate) {
-    this.textArray = textArray ; // lines of text to send to translator
-    this.translatorWebsocket = translatorWebsocket;
-    this.targetLanguage = targetLanguage;
-    this.translations = [];
-    this.intervalId = null;
-    this.intervalTime = textRate;
-    this.boundRequestTranslation = null; // required for setInterval https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval#the_this_problem
-  }
-
-  init() {
-    this.ws = new WebSocket(this.translatorWebsocket);
-    this.ws.addEventListener('open', () => { this.openWebsocket() });
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event) });
-    this.boundRequestTranslation = this.requestTranslation.bind(this);
-  }
-
-  openWebsocket() {
-    this.intervalId = setInterval(this.boundRequestTranslation, this.intervalTime);
-  }
-
-  requestTranslation() {
-    if (this.textArray.length > 0) {
-      this.ws.send(JSON.stringify({
-        text: this.textArray.pop(),
-        target: this.targetLanguage,
-      }));
-    } else {
-      window.clearInterval(this.intervalId);
-      this.ws.close();
-    }
-  }
-
-  receiveTranslation(event) {
-    this.translations.push(event.data);
-    console.log(`speakerId: ${this.intervalId},`);
-    console.log(`speakerRate: ${this.intervalTime},`);
-    console.log(`targetLanguage: ${this.targetLanguage}`);
-    console.log(`translation: ${event.data}`);
-    console.log('//////');
-  }
-}
 
