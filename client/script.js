@@ -1,5 +1,62 @@
 let WS;
 const EL = {};
+const LANGUAGECODES = [
+  { code:'ar', name: 'Arabic' },
+  { code:'eu', name: 'Basque' },
+  { code:'bn',  name: 'Bengali' },
+  { code:'ca', name: 'Catalan' },
+  { code:'zh-CN', name: 'Chinese' },
+  { code:'zh-CN', name: 'Chinese' },
+  { code:'zh-TW', name: 'Chinese' },
+  { code:'chr', name: 'Cherokee' },
+  { code:'hr', name: 'Croatian' },
+  { code:'cs', name: 'Czech' },
+  { code:'da', name: 'Danish' },
+  { code:'nl', name: 'Dutch' },
+  { code:'en-GB', name: 'English' },
+  { code:'en', name: 'English' },
+  { code:'et', name: 'Estonian' },
+  { code:'fr', name: 'French' },
+  { code:'fi', name: 'Finnish' },
+  { code:'fil', name: 'Filipino' },
+  { code:'de', name: 'German' },
+  { code:'el', name: 'Greek' },
+  { code:'gu', name: 'Gujarati' },
+  { code:'iw', name: 'Hebrew' },
+  { code:'hi', name: 'Hindi' },
+  { code:'hu', name: 'Hungarian' },
+  { code:'it', name: 'Italian' },
+  { code:'id', name: 'Indonesian' },
+  { code:'is', name: 'Icelandic' },
+  { code:'ja', name: 'Japanese' },
+  { code:'kn', name: 'Kannada' },
+  { code:'ko', name: 'Korean' },
+  { code:'lv', name: 'Latvian' },
+  { code:'lt', name: 'Lithuanian' },
+  { code:'ms', name: 'Malay' },
+  { code:'ml', name: 'Malayalam' },
+  { code:'mr', name: 'Marathi' },
+  { code:'no', name: 'Norwegian' },
+  { code:'pl', name: 'Polish' },
+  { code:'pt-BR', name: 'Portuguese' },
+  { code:'pt-PT', name: 'Portuguese' },
+  { code:'ro', name: 'Romanian' },
+  { code:'ru', name: 'Russian' },
+  { code:'sr', name: 'Serbian' },
+  { code:'es', name: 'Spanish' },
+  { code:'sw', name: 'Swahili' },
+  { code:'sv', name: 'Swedish' },
+  { code:'sk', name: 'Slovak' },
+  { code:'sl', name: 'Slovenian' },
+  { code:'ta', name: 'Tamil' },
+  { code:'te', name: 'Telugu' },
+  { code:'th', name: 'Thai' },
+  { code:'tr', name: 'Turkish' },
+  { code:'uk', name: 'Ukrainian' },
+  { code:'ur', name: 'Urdu' },
+  { code:'vi', name: 'Vietnamese' },
+  { code:'cy', name: 'Welsh' },
+];
 
 function toServer() {
   WS.send(JSON.stringify({
@@ -20,9 +77,8 @@ function updateWebSocket() {
 function runSimulation() {
   const clients = [];
   const numberOfClients = EL.numberOfSpeakers.value;
-  const translatorWebsocket = 'ws://' + EL.translateServerAddress.value;
-  const targetLanguage = 'de';
-  const thingsToTranslate = [
+  const translatorWs = 'ws://' + EL.translateServerAddress.value;
+  const textList = [
     'hello there',
     'thanks for reading the nonsense I am writing',
     'Really I am flattered and surprised! That you made it this far',
@@ -35,10 +91,22 @@ function runSimulation() {
     'what kind of tree can you fit in your hand?',
     'a palm tree',
   ];
+
   for (let i = 0; i < numberOfClients; i += 1) {
-    const newClient = new client([...thingsToTranslate], translatorWebsocket, targetLanguage);
+    const targetLang = LANGUAGECODES[Math.floor(Math.random() * LANGUAGECODES.length)].code;
+    const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
+    const newClient = new client([...textList], translatorWs, targetLang, translateRate);
     newClient.init();
     clients.push(newClient);
+  }
+}
+
+function initLanguageSelector() {
+  for (const language of LANGUAGECODES) {
+    const optionEl = document.createElement('option');
+    optionEl.value = language.code;
+    optionEl.textContent = language.name;
+    EL.languageSelector.appendChild(optionEl);
   }
 }
 
@@ -61,6 +129,7 @@ function addEventListeners() {
 
 function init() {
   initElements();
+  initLanguageSelector();
   EL.translateServerAddress.value = window.location.hostname + ':' + (window.location.port || '80');
   addEventListeners();
   updateWebSocket();
@@ -104,7 +173,9 @@ class client {
 
   receiveTranslation(event) {
     this.translations.push(event.data);
-    console.log(`speakerId: ${this.intervalId}, speakerRate${this.intervalTime}`);
+    console.log(`speakerId: ${this.intervalId},`);
+    console.log(`speakerRate: ${this.intervalTime},`);
+    console.log(`targetLanguage: ${this.targetLanguage}`);
     console.log(`translation: ${event.data}`);
     console.log('//////');
   }
