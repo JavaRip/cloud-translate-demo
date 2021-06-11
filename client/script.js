@@ -1,9 +1,9 @@
 const EL = {};
 let MANUALTRANSLATOR = null;
-let SIMULATOR = null;
+// let SIMULATOR = null;
 import { Client } from './classes/client.js';
 import { ManualTranslator } from './classes/manualTranslator.js';
-import { Simulator } from './classes/simulator.js';
+// import { Simulator } from './classes/simulator.js';
 import { languages as LANGUAGECODES } from './data/languageCodes.js';
 import { textList as TEXTLIST } from './data/sampleTexts.js';
 
