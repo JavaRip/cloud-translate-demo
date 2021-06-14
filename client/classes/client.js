@@ -1,6 +1,6 @@
 export class Client {
   constructor(textArray, translatorWebsocket, targetLanguage, textRate) {
-    this.textArray = textArray ; // lines of text to send to translator
+    this.textArray = textArray; // lines of text to send to translator
     this.translatorWebsocket = translatorWebsocket;
     this.targetLanguage = targetLanguage;
     this.translations = [];
@@ -11,8 +11,8 @@ export class Client {
 
   init() {
     this.ws = new WebSocket(this.translatorWebsocket);
-    this.ws.addEventListener('open', () => { this.openWebsocket() });
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event) });
+    this.ws.addEventListener('open', () => { this.openWebsocket(); });
+    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
     this.boundRequestTranslation = this.requestTranslation.bind(this);
   }
 

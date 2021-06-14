@@ -11,4 +11,3 @@ export const textList = [
   'what kind of tree can you fit in your hand?',
   'a palm tree',
 ];
-

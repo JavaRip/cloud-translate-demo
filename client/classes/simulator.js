@@ -12,7 +12,7 @@ export class Simulator {
     }
   }
 
-  stop () {
+  stop() {
     for (const client of this.clientArr) {
       client.stop();
     }

@@ -4,12 +4,12 @@ export class ManualTranslator {
     this.textDestination = textDestination;
     this.targetSelector = targetSelector;
     this.ws = new WebSocket(webSocketAddr);
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event) });
+    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
   }
 
   updateWebSocket(websocketAddr) {
     this.ws = new WebSocket(websocketAddr);
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event) });
+    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
   }
 
   requestTranslation() {

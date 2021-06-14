@@ -1,10 +1,10 @@
-const EL = {};
-let MANUALTRANSLATOR = null;
 import { Client } from './classes/client.js';
 import { ManualTranslator } from './classes/manualTranslator.js';
 import { Simulator } from './classes/simulator.js';
 import { languages as LANGUAGECODES } from './data/languageCodes.js';
 import { textList as TEXTLIST } from './data/sampleTexts.js';
+const EL = {};
+let MANUALTRANSLATOR = null;
 
 function runSimulation() {
   const clients = getClients(EL.numberOfSpeakers.value);
@@ -53,11 +53,11 @@ function initElements() {
 
 function addEventListeners() {
   EL.textToTranslate.addEventListener('keyup', () => {
-    MANUALTRANSLATOR.requestTranslation()
+    MANUALTRANSLATOR.requestTranslation();
   });
 
   EL.languageSelector.addEventListener('change', () => {
-    MANUALTRANSLATOR.requestTranslation()
+    MANUALTRANSLATOR.requestTranslation();
   });
 
   EL.serverAddressUpdate.addEventListener('click', () => {
@@ -75,11 +75,9 @@ function init() {
     EL.textToTranslate,
     EL.translatedText,
     EL.languageSelector,
-    getWsAddr()
+    getWsAddr(),
   );
   addEventListeners();
 }
 
-window.addEventListener('load', init)
-
-
+window.addEventListener('load', init);
