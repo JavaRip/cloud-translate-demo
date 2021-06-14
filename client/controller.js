@@ -1,44 +1,51 @@
 const EL = {};
 let MANUALTRANSLATOR = null;
-// let SIMULATOR = null;
 import { Client } from './classes/client.js';
 import { ManualTranslator } from './classes/manualTranslator.js';
-// import { Simulator } from './classes/simulator.js';
+import { Simulator } from './classes/simulator.js';
 import { languages as LANGUAGECODES } from './data/languageCodes.js';
 import { textList as TEXTLIST } from './data/sampleTexts.js';
 
 function runSimulation() {
-  const clients = [];
-  const numberOfClients = EL.numberOfSpeakers.value;
-  const translatorWs = getWsAddr;
+  const clients = getClients(EL.numberOfSpeakers.value);
+  const simulation = new Simulator(clients, 5000);
+  simulation.init();
+}
 
-  for (let i = 0; i < numberOfClients; i += 1) {
+function getClients(numClients) {
+  const clients = [];
+
+  for (let i = 0; i < numClients; i += 1) {
+    // select target language at random
     const targetLang = LANGUAGECODES[Math.floor(Math.random() * LANGUAGECODES.length)].code;
+
+    // translate rate is 1000ms +/- 500ms (randomized)
     const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
-    const newClient = new Client([...TEXTLIST], translatorWs, targetLang, translateRate);
-    newClient.init();
+    const newClient = new Client([...TEXTLIST], getWsAddr(), targetLang, translateRate);
     clients.push(newClient);
   }
+
+  return clients;
 }
 
 function initLanguageSelector() {
   for (const language of LANGUAGECODES) {
     const optionEl = document.createElement('option');
     optionEl.value = language.code;
-    optionEl.textContent = language.name;
+    optionEl.textContent = `${language.name} [${language.code}]`;
     EL.languageSelector.appendChild(optionEl);
   }
 }
 
 function getWsAddr() {
-  return 'ws://' + EL.translateServerAddress.value;
+  return 'ws://' + EL.translateServerAddr.value;
 }
 
 function initElements() {
   EL.textToTranslate = document.querySelector('#text-to-translate');
   EL.translatedText = document.querySelector('#translated-text');
   EL.languageSelector = document.querySelector('#language-selector');
-  EL.translateServerAddress = document.querySelector('#translate-server-address');
+  EL.translateServerAddr = document.querySelector('#translate-server-address');
   EL.serverAddressUpdate = document.querySelector('#server-address-update');
   EL.numberOfSpeakers = document.querySelector('#number-of-speakers');
   EL.startSimulation = document.querySelector('#start-simulation');
@@ -63,8 +70,13 @@ function addEventListeners() {
 function init() {
   initElements();
   initLanguageSelector();
-  EL.translateServerAddress.value = window.location.hostname + ':' + (window.location.port || '80');
-  MANUALTRANSLATOR = new ManualTranslator(EL.textToTranslate, EL.translatedText, EL.languageSelector, getWsAddr());
+  EL.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
+  MANUALTRANSLATOR = new ManualTranslator(
+    EL.textToTranslate,
+    EL.translatedText,
+    EL.languageSelector,
+    getWsAddr()
+  );
   addEventListeners();
 }
 

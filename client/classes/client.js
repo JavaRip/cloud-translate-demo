@@ -16,20 +16,24 @@ export class Client {
     this.boundRequestTranslation = this.requestTranslation.bind(this);
   }
 
+  stop() {
+    this.ws.close();
+    window.clearInterval(this.intervalId);
+  }
+
   openWebsocket() {
     this.intervalId = setInterval(this.boundRequestTranslation, this.intervalTime);
   }
 
   requestTranslation() {
-    if (this.textArray.length > 0) {
-      this.ws.send(JSON.stringify({
-        text: this.textArray.pop(),
-        target: this.targetLanguage,
-      }));
-    } else {
-      window.clearInterval(this.intervalId);
-      this.ws.close();
-    }
+    this.ws.send(JSON.stringify({
+      text: this.textArray[0],
+      target: this.targetLanguage,
+    }));
+
+    // rotate text array so next message is sent next
+    const buffer = this.textArray.pop();
+    this.textArray.unshift(buffer);
   }
 
   receiveTranslation(event) {
