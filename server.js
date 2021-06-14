@@ -13,8 +13,15 @@ app.use(express.static('client'));
 const server = http.createServer(app);
 
 // create api key file for GOOGLE_APPLICATION_CREDENTIALS
+// if file does not already exist
+// or if contents of api file does not match env variable
 if (!fs.existsSync('api_key.json')) {
   fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
+} else {
+  if (fs.readFileSync('api_key.json', 'utf8') !== process.env.GOOGLE_APPLICATION_KEY) {
+    console.log('application key updated');
+    fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
+  }
 }
 process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key.json';
 
@@ -22,14 +29,14 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key.json';
 async function translateText(text, target) {
   let [translations] = await translator.translate(text, target);
   translations = Array.isArray(translations) ? translations : [translations];
-  return translations[0];
+  return { translation: translations[0], original: text };
 }
 
 function listener(socket) {
   socket.on('message', async (msg) => {
     const msgObj = JSON.parse(msg);
     const translation = await translateText(msgObj.text, msgObj.target);
-    socket.send(translation);
+    socket.send(JSON.stringify(translation));
   });
 }
 
