@@ -37,11 +37,15 @@ export class Client {
   }
 
   receiveTranslation(event) {
+    const translation = JSON.parse(event.data);
+    const sourceText = translation.original;
+    const translatedText = translation.translation;
     this.translations.push(event.data);
     console.log(`speakerId: ${this.intervalId},`);
     console.log(`speakerRate: ${this.intervalTime},`);
     console.log(`targetLanguage: ${this.targetLanguage}`);
-    console.log(`translation: ${event.data}`);
+    console.log(`translation: ${translatedText}`);
+    console.log(`sourceText: ${sourceText}`);
     console.log('//////');
   }
 }

@@ -8,7 +8,7 @@ let MANUALTRANSLATOR = null;
 
 function runSimulation() {
   const clients = getClients(EL.numberOfSpeakers.value);
-  const simulation = new Simulator(clients, 5000);
+  const simulation = new Simulator(clients, 50000);
   simulation.init();
 }
 

@@ -20,6 +20,6 @@ export class ManualTranslator {
   }
 
   receiveTranslation(event) {
-    this.textDestination.textContent = event.data;
+    this.textDestination.textContent = JSON.parse(event.data).translation;
   }
 }
