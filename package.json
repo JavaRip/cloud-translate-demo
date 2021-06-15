@@ -4,7 +4,9 @@
   "description": "Google Cloud Translation API demo",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "docker-build": "docker build . -t cloud-translate-image",
+    "docker-run": "docker run --rm -d -P --env-file .env --name cloud-translate-container cloud-translate-image && docker port cloud-translate-container",
+    "docker-stop": "docker stop cloud-translate-container"
   },
   "author": "KaneSwartz",
   "license": "ISC",
