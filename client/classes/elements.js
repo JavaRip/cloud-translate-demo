@@ -7,5 +7,6 @@ export class Elements {
     this.serverAddressUpdate = document.querySelector('#server-address-update');
     this.numberOfSpeakers = document.querySelector('#number-of-speakers');
     this.startSimulation = document.querySelector('#start-simulation');
+    this.simulationDuration = document.querySelector('#simulation-duration');
   }
 }

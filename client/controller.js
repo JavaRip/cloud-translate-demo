@@ -6,12 +6,13 @@ import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
 
 function runSimulation(elements) {
-  const clients = getClients(elements.numberOfSpeakers.value);
-  const simulation = new Simulator(clients, 50000);
+  const clients = getClients(elements.numberOfSpeakers.value, elements);
+  const duration = (Number(elements.simulationDuration.value) * 1000);
+  const simulation = new Simulator(clients, duration);
   simulation.init();
 }
 
-function getClients(numClients) {
+function getClients(numClients, elements) {
   const clients = [];
 
   for (let i = 0; i < numClients; i += 1) {
@@ -20,7 +21,7 @@ function getClients(numClients) {
 
     // translate rate is 1000ms +/- 500ms (randomized)
     const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
-    const newClient = new Client([...textList], getWsAddr(new Elements()), targetLang, translateRate);
+    const newClient = new Client([...textList], getWsAddr(elements), targetLang, translateRate);
     clients.push(newClient);
   }
 
