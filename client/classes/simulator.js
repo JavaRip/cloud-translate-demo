@@ -7,13 +7,13 @@ export class Simulator {
 
   init() {
     setTimeout(this.boundStop, this.runTime);
-    for (const client of this.clientArr) {
+    for (const client of this.clients) {
       client.init();
     }
   }
 
   stop() {
-    for (const client of this.clientArr) {
+    for (const client of this.clients) {
       client.stop();
     }
   }

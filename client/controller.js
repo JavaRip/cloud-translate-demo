@@ -20,7 +20,7 @@ function getClients(numClients) {
 
     // translate rate is 1000ms +/- 500ms (randomized)
     const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
-    const newClient = new Client([...textList], getWsAddr(), targetLang, translateRate);
+    const newClient = new Client([...textList], getWsAddr(new Elements()), targetLang, translateRate);
     clients.push(newClient);
   }
 
