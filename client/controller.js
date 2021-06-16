@@ -1,13 +1,13 @@
 import { Client } from './classes/client.js';
 import { ManualTranslator } from './classes/manualTranslator.js';
 import { Simulator } from './classes/simulator.js';
-import { languages as LANGUAGECODES } from './data/languageCodes.js';
-import { textList as TEXTLIST } from './data/sampleTexts.js';
-const EL = {};
-let MANUALTRANSLATOR = null;
+import { languages as languageCodes } from './data/languageCodes.js';
+import { textList } from './data/sampleTexts.js';
+const el = {};
+let manualTranslator = null;
 
 function runSimulation() {
-  const clients = getClients(EL.numberOfSpeakers.value);
+  const clients = getClients(el.numberOfSpeakers.value);
   const simulation = new Simulator(clients, 50000);
   simulation.init();
 }
@@ -17,11 +17,11 @@ function getClients(numClients) {
 
   for (let i = 0; i < numClients; i += 1) {
     // select target language at random
-    const targetLang = LANGUAGECODES[Math.floor(Math.random() * LANGUAGECODES.length)].code;
+    const targetLang = languageCodes[Math.floor(Math.random() * languageCodes.length)].code;
 
     // translate rate is 1000ms +/- 500ms (randomized)
     const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
-    const newClient = new Client([...TEXTLIST], getWsAddr(), targetLang, translateRate);
+    const newClient = new Client([...textList], getWsAddr(), targetLang, translateRate);
     clients.push(newClient);
   }
 
@@ -29,52 +29,52 @@ function getClients(numClients) {
 }
 
 function initLanguageSelector() {
-  for (const language of LANGUAGECODES) {
+  for (const language of languageCodes) {
     const optionEl = document.createElement('option');
     optionEl.value = language.code;
     optionEl.textContent = `${language.name} [${language.code}]`;
-    EL.languageSelector.appendChild(optionEl);
+    el.languageSelector.appendChild(optionEl);
   }
 }
 
 function getWsAddr() {
-  return 'ws://' + EL.translateServerAddr.value;
+  return 'ws://' + el.translateServerAddr.value;
 }
 
 function initElements() {
-  EL.textToTranslate = document.querySelector('#text-to-translate');
-  EL.translatedText = document.querySelector('#translated-text');
-  EL.languageSelector = document.querySelector('#language-selector');
-  EL.translateServerAddr = document.querySelector('#translate-server-address');
-  EL.serverAddressUpdate = document.querySelector('#server-address-update');
-  EL.numberOfSpeakers = document.querySelector('#number-of-speakers');
-  EL.startSimulation = document.querySelector('#start-simulation');
+  el.textToTranslate = document.querySelector('#text-to-translate');
+  el.translatedText = document.querySelector('#translated-text');
+  el.languageSelector = document.querySelector('#language-selector');
+  el.translateServerAddr = document.querySelector('#translate-server-address');
+  el.serverAddressUpdate = document.querySelector('#server-address-update');
+  el.numberOfSpeakers = document.querySelector('#number-of-speakers');
+  el.startSimulation = document.querySelector('#start-simulation');
 }
 
 function addEventListeners() {
-  EL.textToTranslate.addEventListener('keyup', () => {
-    MANUALTRANSLATOR.requestTranslation();
+  el.textToTranslate.addEventListener('keyup', () => {
+    manualTranslator.requestTranslation();
   });
 
-  EL.languageSelector.addEventListener('change', () => {
-    MANUALTRANSLATOR.requestTranslation();
+  el.languageSelector.addEventListener('change', () => {
+    manualTranslator.requestTranslation();
   });
 
-  EL.serverAddressUpdate.addEventListener('click', () => {
-    MANUALTRANSLATOR.updateWebSocket(getWsAddr());
+  el.serverAddressUpdate.addEventListener('click', () => {
+    manualTranslator.updateWebSocket(getWsAddr());
   });
 
-  EL.startSimulation.addEventListener('click', runSimulation);
+  el.startSimulation.addEventListener('click', runSimulation);
 }
 
 function init() {
   initElements();
   initLanguageSelector();
-  EL.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
-  MANUALTRANSLATOR = new ManualTranslator(
-    EL.textToTranslate,
-    EL.translatedText,
-    EL.languageSelector,
+  el.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
+  manualTranslator = new ManualTranslator(
+    el.textToTranslate,
+    el.translatedText,
+    el.languageSelector,
     getWsAddr(),
   );
   addEventListeners();

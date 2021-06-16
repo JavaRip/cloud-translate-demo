@@ -1,6 +1,6 @@
 export class Simulator {
   constructor(clients, runTime) {
-    this.clientArr = clients;
+    this.clients = clients;
     this.runTime = runTime;
     this.boundStop = this.stop.bind(this);
   }

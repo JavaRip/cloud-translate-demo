@@ -12,16 +12,15 @@ const app = express();
 app.use(express.static('client'));
 const server = http.createServer(app);
 
-// create api key file for GOOGLE_APPLICATION_CREDENTIALS
-// if file does not already exist
-// or if contents of api file does not match env variable
+// GOOGLE_APPLICATION_CREDENTIALS must point to a file containing credentials. Since this
+// file cannot be in the docker image for security, it is written at runtime from an
+// environment variable. See README for instructions on setting the env when running image
+// https://cloud.google.com/translate/docs/setup#using_the_service_account_key_file_in_your_environment
 if (!fs.existsSync('api_key.json')) {
   fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
-} else {
-  if (fs.readFileSync('api_key.json', 'utf8') !== process.env.GOOGLE_APPLICATION_KEY) {
-    console.log('application key updated');
-    fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
-  }
+} else if (fs.readFileSync('api_key.json', 'utf8') !== process.env.GOOGLE_APPLICATION_KEY) {
+  console.log('application key updated');
+  fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
 }
 process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key.json';
 
