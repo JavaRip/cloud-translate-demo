@@ -1,13 +1,12 @@
 import { Client } from './classes/client.js';
 import { ManualTranslator } from './classes/manualTranslator.js';
 import { Simulator } from './classes/simulator.js';
+import { Elements } from './classes/elements.js';
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
-const el = {};
-let manualTranslator = null;
 
-function runSimulation() {
-  const clients = getClients(el.numberOfSpeakers.value);
+function runSimulation(elements) {
+  const clients = getClients(elements.numberOfSpeakers.value);
   const simulation = new Simulator(clients, 50000);
   simulation.init();
 }
@@ -28,56 +27,49 @@ function getClients(numClients) {
   return clients;
 }
 
-function initLanguageSelector() {
+function initLanguageSelector(elements) {
   for (const language of languageCodes) {
     const optionEl = document.createElement('option');
     optionEl.value = language.code;
     optionEl.textContent = `${language.name} [${language.code}]`;
-    el.languageSelector.appendChild(optionEl);
+    elements.languageSelector.appendChild(optionEl);
   }
 }
 
-function getWsAddr() {
-  return 'ws://' + el.translateServerAddr.value;
+function getWsAddr(elements) {
+  return 'ws://' + elements.translateServerAddr.value;
 }
 
-function initElements() {
-  el.textToTranslate = document.querySelector('#text-to-translate');
-  el.translatedText = document.querySelector('#translated-text');
-  el.languageSelector = document.querySelector('#language-selector');
-  el.translateServerAddr = document.querySelector('#translate-server-address');
-  el.serverAddressUpdate = document.querySelector('#server-address-update');
-  el.numberOfSpeakers = document.querySelector('#number-of-speakers');
-  el.startSimulation = document.querySelector('#start-simulation');
-}
+function addEventListeners(elements) {
+  const manualTranslator = new ManualTranslator(
+    elements.textToTranslate,
+    elements.translatedText,
+    elements.languageSelector,
+    getWsAddr(elements),
+  );
 
-function addEventListeners() {
-  el.textToTranslate.addEventListener('keyup', () => {
+  elements.textToTranslate.addEventListener('keyup', () => {
     manualTranslator.requestTranslation();
   });
 
-  el.languageSelector.addEventListener('change', () => {
+  elements.languageSelector.addEventListener('change', () => {
     manualTranslator.requestTranslation();
   });
 
-  el.serverAddressUpdate.addEventListener('click', () => {
+  elements.serverAddressUpdate.addEventListener('click', () => {
     manualTranslator.updateWebSocket(getWsAddr());
   });
 
-  el.startSimulation.addEventListener('click', runSimulation);
+  elements.startSimulation.addEventListener('click', () => {
+    runSimulation(elements);
+  });
 }
 
 function init() {
-  initElements();
-  initLanguageSelector();
-  el.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
-  manualTranslator = new ManualTranslator(
-    el.textToTranslate,
-    el.translatedText,
-    el.languageSelector,
-    getWsAddr(),
-  );
-  addEventListeners();
+  const elements = new Elements();
+  initLanguageSelector(elements);
+  elements.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
+  addEventListeners(elements);
 }
 
 window.addEventListener('load', init);
