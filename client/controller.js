@@ -4,15 +4,16 @@ import { Simulator } from './classes/simulator.js';
 import { Elements } from './classes/elements.js';
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
+const elements = new Elements();
 
-function runSimulation(elements) {
-  const clients = getClients(elements.numberOfSpeakers.value, elements);
+function runSimulation() {
+  const clients = getClients(elements.numberOfSpeakers.value);
   const duration = (Number(elements.simulationDuration.value) * 1000);
   const simulation = new Simulator(clients, duration);
   simulation.init();
 }
 
-function getClients(numClients, elements) {
+function getClients(numClients) {
   const clients = [];
 
   for (let i = 0; i < numClients; i += 1) {
@@ -21,14 +22,14 @@ function getClients(numClients, elements) {
 
     // translate rate is 1000ms +/- 500ms (randomized)
     const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
-    const newClient = new Client([...textList], getWsAddr(elements), targetLang, translateRate);
+    const newClient = new Client([...textList], getWsAddr(), targetLang, translateRate);
     clients.push(newClient);
   }
 
   return clients;
 }
 
-function initLanguageSelector(elements) {
+function initLanguageSelector() {
   for (const language of languageCodes) {
     const optionEl = document.createElement('option');
     optionEl.value = language.code;
@@ -37,16 +38,16 @@ function initLanguageSelector(elements) {
   }
 }
 
-function getWsAddr(elements) {
+function getWsAddr() {
   return 'ws://' + elements.translateServerAddr.value;
 }
 
-function addEventListeners(elements) {
+function addEventListeners() {
   const manualTranslator = new ManualTranslator(
     elements.textToTranslate,
     elements.translatedText,
     elements.languageSelector,
-    getWsAddr(elements),
+    getWsAddr(),
   );
 
   elements.textToTranslate.addEventListener('keyup', () => {
@@ -62,15 +63,14 @@ function addEventListeners(elements) {
   });
 
   elements.startSimulation.addEventListener('click', () => {
-    runSimulation(elements);
+    runSimulation();
   });
 }
 
 function init() {
-  const elements = new Elements();
-  initLanguageSelector(elements);
+  initLanguageSelector();
   elements.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
-  addEventListeners(elements);
+  addEventListeners();
 }
 
 window.addEventListener('load', init);
