@@ -1,16 +1,163 @@
-body {
-  display: flex;
-  justify-content: space-around;
-  max-width: 70rem;
+:root {
+  --main-bg-color: whitesmoke;
+  --lighter-bg-color: white;
+  --darker-bg-color: gainsboro;
+  --main-fg-color: rgb(20, 20, 20);
+  --red: crimson;
+  --green: darkolivegreen;
 }
 
-#auto-translate,
-#manual-translate,
-#config {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+input[type=text],
+button,
+select {
+  padding: 0.8rem 0.3rem;
+  border: 0.1rem solid var(--main-fg-color);
+}
+
+textarea {
+  padding: 0.3rem 0.3rem;
+  border: 0.1rem solid var(--main-fg-color);
+}
+
+button,
+select {
+  cursor: pointer;
+  background: var(--main-bg-color);
+  padding: 1rem;
+}
+
+button:active {
+  background: var(---lighter-bg-color);
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--darker-bg-color);
+  color: var(--main-fg-color);
+}
+
+.card {
+  height: max-content;
+  width: max-content;
+  background: var(--lighter-bg-color);
+  margin: 1rem;
+  padding: 0 3rem;
+  box-shadow: 0 0 0.2rem var(--main-fg-color);
+  border-radius: 0.2rem;
+}
+
+#wrapper.config           > :not(#config, nav)           { display: none; }
+#wrapper.manual-translate > :not(#manual-translate, nav) { display: none; }
+#wrapper.auto-translate   > :not(#auto-translate, nav)   { display: none; }
+
+#wrapper {
+  display: flex;
+  height: inherit;
+  max-height: 60rem;
+  width: inherit;
+  max-width: 110rem;
+  background: var(--main-bg-color);
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  min-width: max-content;
+  width: 3rem;
+  max-height: inherit;
+  justify-content: center;
+  background: var(--lighter-bg-color);
+}
+
+.nav-item {
+  padding: 1rem 0;
+  margin: 0.3rem 0;
+  font-size: 1.3rem;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+}
+
+.nav-item.selected {
+  background-color: var(--darker-bg-color);
+}
+
+#auto-translate {
   display: grid;
-  row-gap: 1em;
-  width: 30rem;
-  margin: 1rem 1rem;
+  row-gap: 1rem;
+  margin: 2rem auto;
+}
+
+#config {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#config > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 10rem;
+}
+
+#config > div > #server-address-update {
+  width: max-content;
+  margin: 0 auto;
+}
+
+#manual-translate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+#manual-translate > div {
+  display: grid;
+  row-gap: 1rem;
+  column-gap: 1rem;
+  width: 60rem;
+  max-width: 100%;
+  height: max-content;
+  padding: 2rem;
+  grid-template-areas:
+    "textLabel translationLabel"
+    "textContent translationContent"
+    "textContent translationContent"
+    ". languageSelector";
+}
+
+#manual-translate > div > label[for=text-to-translate]  { grid-area: textLabel; }
+#manual-translate > div > #text-to-translate            { grid-area: textContent; }
+#manual-translate > div > #translated-text              { grid-area: translationContent; }
+#manual-translate > div > label[for=translated-text]    { grid-area: translationLabel; }
+#manual-translate > div > label[for=language-selector]  { grid-area: translationLabel; }
+#manual-translate > div > #language-selector            { grid-area: languageSelector; }
+
+
+#manual-translate > div > textarea {
+  overflow: auto;
+  resize: none;
+}
+
+#manual-translate > div > #translated-text {
+  background: var(--main-bg-color);
+  cursor: default;
 }
 
 #auto-translate input[type=number] {

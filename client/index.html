@@ -2,45 +2,57 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="default.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="default.css">
   <title>Cloud Translate Dashboard</title>
 </head>
 
 <body>
 
-<div id="config">
-  <span>
-    <label for="translate-server-address">Translator server address:</label>
-    <input type="text" id="translate-server-address"></input>
-  </span>
+<div id="wrapper" class="manual-translate">
+  <nav>
+    <span id="to-settings" class="nav-item">⚙️</span>
+    <span id="to-manual-translate" class="nav-item selected">🖱️</span>
+    <span id="to-simulation" class="nav-item">📈</span>
+  </nav>
 
-  <button id="server-address-update">Update Server Address</button>
-</div>
+  <div id="config">
+    <div class="card">
+      <span>
+        <label for="translate-server-address">Translator server address:</label>
+        <input type="text" id="translate-server-address"></input>
+      </span>
 
-<div id="manual-translate">
-  <label for="text-to-translate">Text to Translate:</label>
-  <textarea id="text-to-translate"></textarea>
+      <button id="server-address-update">Update Server Address</button>
+    </div>
+  </div>
 
-  <label for="language-selector">Select language to translate to:</label>
+  <div id="manual-translate">
+    <div class="card">
+      <label for="text-to-translate">Text to Translate</label>
+      <textarea id="text-to-translate"></textarea>
 
-  <select name="language" id="language-selector"></select>
+      <label for="translated-text">Translated Text</label>
+      <textarea id="translated-text" readonly></textarea>
+      <select name="language" id="language-selector"></select>
+    </div>
+  </div>
 
-  <p>Translated Text:</p>
-  <p id="translated-text"></p>
-</div>
+  <div id="auto-translate">
+    <div class="card">
+      <span>
+        <label for="number-of-speakers">How many speakers to simulate:</label>
+        <input type="number" id="number-of-speakers"></input>
+      </span>
 
-<div id="auto-translate">
-  <span>
-    <label for="number-of-speakers">How many speakers to simulate:</label>
-    <input type="number" id="number-of-speakers"></input>
-  </span>
+      <span>
+        <label for="simulation-duration">How long to run simulation for (seconds):</label>
+        <input type="number" id="simulation-duration"></input>
+      </span>
 
-  <span>
-    <label for="simulation-duration">How long to run simulation for (seconds):</label>
-    <input type="number" id="simulation-duration"></input>
-  </span>
-
-  <button id="start-simulation">Start Simulation</button>
+      <button id="start-simulation">Start Simulation</button>
+    </div>
+  </div>
 </div>
 
 </body>

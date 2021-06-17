@@ -1,5 +1,6 @@
 export class Elements {
   constructor() {
+    this.wrapper = document.querySelector('#wrapper');
     this.textToTranslate = document.querySelector('#text-to-translate');
     this.translatedText = document.querySelector('#translated-text');
     this.languageSelector = document.querySelector('#language-selector');
@@ -8,5 +9,6 @@ export class Elements {
     this.numberOfSpeakers = document.querySelector('#number-of-speakers');
     this.startSimulation = document.querySelector('#start-simulation');
     this.simulationDuration = document.querySelector('#simulation-duration');
+    this.nav = document.querySelector('nav');
   }
 }

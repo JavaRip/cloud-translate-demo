@@ -2,6 +2,7 @@ import { Client } from './classes/client.js';
 import { ManualTranslator } from './classes/manualTranslator.js';
 import { Simulator } from './classes/simulator.js';
 import { Elements } from './classes/elements.js';
+import { Navi } from './classes/navigator.js';
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
 const elements = new Elements();
@@ -49,6 +50,7 @@ function addEventListeners() {
     elements.languageSelector,
     getWsAddr(),
   );
+  const navigator = new Navi();
 
   elements.textToTranslate.addEventListener('keyup', () => {
     manualTranslator.requestTranslation();
@@ -64,6 +66,10 @@ function addEventListeners() {
 
   elements.startSimulation.addEventListener('click', () => {
     runSimulation();
+  });
+
+  elements.nav.addEventListener('click', (event) => {
+    navigator.parse(event, elements);
   });
 }
 
