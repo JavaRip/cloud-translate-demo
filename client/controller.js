@@ -9,7 +9,7 @@ const elements = new Elements();
 let statRefreshId; // this and its associated code should be in their own class
 
 function runSimulation() {
-  const clients = getClients(elements.numberOfSpeakers.value);
+  const clients = getClients(elements.numberOfClients.value);
   const duration = (Number(elements.simulationDuration.value) * 1000);
   const simulation = new Simulator(clients, duration);
   setSimulationButtons(simulation);
@@ -18,17 +18,28 @@ function runSimulation() {
 }
 
 function setSimulationButtons(simulation) {
-  elements.stopSimulation.addEventListener('click', () => {
-    simulation.stop();
-    window.clearInterval(statRefreshId);
-  });
-  elements.stopSimulation.style.display = '';
-  elements.startSimulation.style.display = 'none';
+  for (const button of elements.stopButtons) {
+    button.addEventListener('click', () => {
+      simulation.stop();
+      window.clearInterval(statRefreshId);
+      resetSimulationButtons();
+    });
+    button.style.display = '';
+  }
+
+  for (const button of elements.startButtons) {
+    button.style.display = 'none';
+  }
 }
 
 function resetSimulationButtons() {
-  elements.stopSimulation.style.display = 'none';
-  elements.startSimulation.style.display = '';
+  for (const button of elements.stopButtons) {
+    button.style.display = 'none';
+  }
+
+  for (const button of elements.startButtons) {
+    button.style.display = '';
+  }
 }
 
 function getClients(numClients) {
@@ -95,13 +106,28 @@ function addEventListeners() {
     manualTranslator.updateWebSocket(getWsAddr());
   });
 
-  elements.startSimulation.addEventListener('click', () => {
+  elements.startStressTest.addEventListener('click', () => {
     runSimulation();
   });
 
   elements.nav.addEventListener('click', (event) => {
     navigator.parse(event, elements);
   });
+
+  for (const button of elements.plusButtons) {
+    button.addEventListener('click', () => {
+      const input = button.parentNode.querySelector('input');
+      input.value = Number(input.value) + 1;
+    });
+  }
+
+  for (const button of elements.minusButtons) {
+    button.addEventListener('click', () => {
+      const input = button.parentNode.querySelector('input');
+      if (Number(input.value) > 0) input.value = Number(input.value) - 1;
+      else input.value = 0;
+    });
+  }
 }
 
 function init() {

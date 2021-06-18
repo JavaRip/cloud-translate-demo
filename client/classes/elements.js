@@ -6,13 +6,19 @@ export class Elements {
     this.languageSelector = document.querySelector('#language-selector');
     this.translateServerAddr = document.querySelector('#translate-server-address');
     this.serverAddressUpdate = document.querySelector('#server-address-update');
-    this.numberOfSpeakers = document.querySelector('#number-of-speakers');
-    this.startSimulation = document.querySelector('#start-simulation');
-    this.stopSimulation = document.querySelector('#stop-simulation');
+    this.numberOfClients = document.querySelector('#number-of-clients');
+    this.startStressTest = document.querySelector('#start-stress-test');
+    this.stopStessTest = document.querySelector('#stop-stress-test');
+    this.startAllLanguagesTest = document.querySelector('#start-all-languages-test');
+    this.stopAllLanguagesTest = document.querySelector('#stop-all-languages-test');
+    this.startButtons = document.querySelectorAll('.start-button');
+    this.stopButtons = document.querySelectorAll('.stop-button');
     this.simulationDuration = document.querySelector('#simulation-duration');
     this.translationsRequested = document.querySelector('#translations-requested');
     this.translationsReceived = document.querySelector('#translations-received');
     this.responseTime = document.querySelector('#response-time');
+    this.plusButtons = document.querySelectorAll('.plus-button');
+    this.minusButtons = document.querySelectorAll('.minus-button');
     this.nav = document.querySelector('nav');
   }
 }

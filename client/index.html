@@ -39,30 +39,50 @@
   </div>
 
   <div id="auto-translate">
+    <div id="stress-test" class="card">
+
+      <label for="num-clients-control">Speakers to simulate</label>
+      <div id="num-clients-control" class="number-input">
+        <button class="minus-button">-</button>
+        <input type="text" id="number-of-clients"></input>
+        <button class="plus-button">+</button>
+      </div>
+
+      <label for="stress-test-duration-control">Simulation duration (seconds)</label>
+      <div id="stress-test-duration-control" class="number-input">
+        <button class="minus-button">-</button>
+        <input type="text" id="simulation-duration"></input>
+        <button class="plus-button">+</button>
+      </div>
+
+      <span>
+      </span>
+
+      <button id="start-stress-test" class="start-button">Start Simulation</button>
+      <button id="stop-stress-test" class="stop-button" style="display: none">Stop Simulation</button>
+    </div>
+
     <div id="all-languages" class="card">
-      <span>
-        <label for="number-of-speakers">How many speakers to simulate:</label>
-        <input type="number" id="number-of-speakers"></input>
-      </span>
+      <label for="all-languages-duration-control">How long to run simulation for (seconds):</label>
+      <div id="all-languages-duration-control" class="number-input">
+        <button class="minus-button">-</button>
+        <input type="text" id="simulation-duration"></input>
+        <button class="plus-button">+</button>
+      </div>
 
-      <span>
-        <label for="simulation-duration">How long to run simulation for (seconds):</label>
-        <input type="number" id="simulation-duration"></input>
-      </span>
-
-      <button id="start-simulation">Start Simulation</button>
-      <button id="stop-simulation" style="display: none">Stop Simulation</button>
+      <button id="start-all-languages-test" class="start-button">Start Simulation</button>
+      <button id="stop-all-languages-test" class="stop-button" style="display: none">Stop Simulation</button>
     </div>
 
     <div id="simulation-stats" class="card">
-      <p>Translations sent:</p>
-      <p id="translations-requested">0</p>
+      <label for="translations-requested">Translations sent:</label>
+      <p id="translations-requested">-</p>
 
-      <p>Translations received:</p>
-      <p id="translations-received">0</p>
+      <label for="translations-received">Translations received:</label>
+      <p id="translations-received">-</p>
 
-      <p>Average response time:</p>
-      <p id="response-time">0</p>
+      <label for="response-time">Average response time:</label>
+      <p id="response-time">-</p>
     </div>
 </div>
 
