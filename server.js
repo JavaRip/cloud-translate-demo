@@ -28,14 +28,21 @@ process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key.json';
 async function translateText(text, target) {
   let [translations] = await translator.translate(text, target);
   translations = Array.isArray(translations) ? translations : [translations];
-  return { translation: translations[0], original: text };
+  return { translation: translations[0], sourceText: text };
 }
 
 function listener(socket) {
   socket.on('message', async (msg) => {
     const msgObj = JSON.parse(msg);
     const translation = await translateText(msgObj.text, msgObj.target);
-    socket.send(JSON.stringify(translation));
+    const response = {
+      sourceText: translation.sourceText,
+      target: msgObj.target,
+      translation: translation.translation,
+      reqTimeStamp: msgObj.reqTimeStamp,
+    };
+
+    socket.send(JSON.stringify(response));
   });
 }
 

@@ -9,11 +9,11 @@
 
 <body>
 
-<div id="wrapper" class="manual-translate">
+<div id="wrapper" class="auto-translate">
   <nav>
     <span id="to-settings" class="nav-item">⚙️</span>
-    <span id="to-manual-translate" class="nav-item selected">🖱️</span>
-    <span id="to-simulation" class="nav-item">📈</span>
+    <span id="to-manual-translate" class="nav-item">🖱️</span>
+    <span id="to-simulation" class="nav-item selected">📈</span>
   </nav>
 
   <div id="config">
@@ -39,7 +39,7 @@
   </div>
 
   <div id="auto-translate">
-    <div class="card">
+    <div id="all-languages" class="card">
       <span>
         <label for="number-of-speakers">How many speakers to simulate:</label>
         <input type="number" id="number-of-speakers"></input>
@@ -52,7 +52,18 @@
 
       <button id="start-simulation">Start Simulation</button>
     </div>
-  </div>
+
+    <div id="simulation-stats" class="card">
+      <p>Translations sent:</p>
+      <p id="translations-sent">0</p>
+
+      <p>Translations received:</p>
+      <p id="translations-received">0</p>
+
+      <p>Average response time:</p>
+      <p id="response-time">0</p>
+    </div>
+
 </div>
 
 </body>
