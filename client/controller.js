@@ -6,12 +6,29 @@ import { Navi } from './classes/navigator.js';
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
 const elements = new Elements();
+let statRefreshId; // this and its associated code should be in their own class
 
 function runSimulation() {
   const clients = getClients(elements.numberOfSpeakers.value);
   const duration = (Number(elements.simulationDuration.value) * 1000);
   const simulation = new Simulator(clients, duration);
+  setSimulationButtons(simulation);
   simulation.init();
+  displaySimulationStats(simulation);
+}
+
+function setSimulationButtons(simulation) {
+  elements.stopSimulation.addEventListener('click', () => {
+    simulation.stop();
+    window.clearInterval(statRefreshId);
+  });
+  elements.stopSimulation.style.display = '';
+  elements.startSimulation.style.display = 'none';
+}
+
+function resetSimulationButtons() {
+  elements.stopSimulation.style.display = 'none';
+  elements.startSimulation.style.display = '';
 }
 
 function getClients(numClients) {
@@ -28,6 +45,20 @@ function getClients(numClients) {
   }
 
   return clients;
+}
+
+function displaySimulationStats(simulation) {
+  statRefreshId = setInterval(() => {
+    simulation.getStats();
+    elements.translationsReceived.textContent = simulation.translationsReceived;
+    elements.translationsRequested.textContent = simulation.translationsRequested;
+    elements.responseTime.textContent = simulation.averageResponseTime + 'ms';
+  }, 500);
+
+  setTimeout(() => {
+    window.clearInterval(statRefreshId);
+    resetSimulationButtons();
+  }, simulation.runTime + 1000);
 }
 
 function initLanguageSelector() {

@@ -3,8 +3,6 @@ export class Simulator {
     this.clients = clients;
     this.runTime = runTime;
     this.boundStop = this.stop.bind(this);
-    this.boundSkimClients = this.skimClients.bind(this);
-    this.skimIntervalId = null;
 
     // stats
     this.translationsReceived = null;
@@ -14,7 +12,6 @@ export class Simulator {
 
   init() {
     setTimeout(this.boundStop, this.runTime);
-    this.skimIntervalId = setInterval(this.boundSkimClients, 500);
     for (const client of this.clients) {
       client.init();
     }
@@ -24,45 +21,33 @@ export class Simulator {
     for (const client of this.clients) {
       client.stop();
     }
-
-    // wait for translations which have still not arrived from server
-    setTimeout(() => window.clearInterval(this.skimIntervalId), 1000);
   }
 
-  skimClients() {
+  getStats() {
     this.translationsRequested = this.getTotReq(this.clients);
     this.translationsReceived = this.getTotRec(this.clients);
     this.averageResponseTime = this.getAvgResTime(this.clients);
-    for (const client of this.clients) {
-      console.log(client.intervalId);
-      console.log(client.translationsRequested);
-      console.log(client.translationsReceived);
-      console.log('translations requested: ' + client.translationsRequested.length);
-      console.log('translations received: ' + client.translationsReceived.length);
-      console.log('average response time: ' + this.getAvgResTime(client));
-      console.log('--------');
-    }
   }
 
-  getTotReq(clients) {
+  getTotReq() {
     let totalRequests = 0;
-    for (const client of clients) {
+    for (const client of this.clients) {
       totalRequests += client.translationsRequested.length;
     }
     return totalRequests;
   }
 
-  getTotRec(clients) {
+  getTotRec() {
     let totalReceived = 0;
-    for (const client of clients) {
+    for (const client of this.clients) {
       totalReceived += client.translationsReceived.length;
     }
     return totalReceived;
   }
 
-  getAvgResTime(clients) {
+  getAvgResTime() {
     let allTransRec = [];
-    for (const client of clients) {
+    for (const client of this.clients) {
       allTransRec = allTransRec.concat(client.translationsReceived);
     }
 
@@ -71,7 +56,7 @@ export class Simulator {
 
     const allResTimes = allTransRec.map(trans => trans.resTime);
     const allResTimesSum = allResTimes.reduce((a, b) => a + b);
-    const averageResTime = allResTimesSum / allResTimes.length;
+    const averageResTime = Math.floor(allResTimesSum / allResTimes.length);
 
     return averageResTime;
   }
