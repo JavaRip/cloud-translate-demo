@@ -11,8 +11,7 @@ export class Pie {
   }
 
   draw(data) {
-    console.log(data);
-    const fillColors = ['cornflowerblue', 'salmon', 'peachpuff', 'mediumaquamarine'];
+    const fillColors = ['cornflowerblue', 'salmon'];
 
     // get data cumulative total of all data point values
     const totData = data.reduce((cumTot, dataPoint) => cumTot + dataPoint.value, 0);

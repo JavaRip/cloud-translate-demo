@@ -69,9 +69,6 @@ function displaySimulationStats(simulation) {
 
     const succTranslations = simulation.translationsRequested + simulation.translationsReceived;
     const failedTranslations = simulation.translationsRequested - simulation.translationsReceived;
-    console.log('-------------------');
-    console.log(succTranslations);
-    console.log(failedTranslations);
     pie.draw([
       { label: 'Successful Translations', value: succTranslations },
       { label: 'Failed Translations', value: failedTranslations },
