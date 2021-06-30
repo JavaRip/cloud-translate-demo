@@ -19,7 +19,6 @@ export class Pie {
     // convert data to a portion of TAU
     for (const dataPoint of data) {
       dataPoint.slice = dataPoint.value / totData * (2 * Math.PI);
-      console.log(dataPoint);
     }
 
     // declare pi chart position and size
