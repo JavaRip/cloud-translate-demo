@@ -3,9 +3,11 @@ import { ManualTranslator } from './classes/manualTranslator.js';
 import { Simulator } from './classes/simulator.js';
 import { Elements } from './classes/elements.js';
 import { Navi } from './classes/navigator.js';
+import { Pie } from './classes/pie.js';
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
 const elements = new Elements();
+const pie = new Pie(elements.translationsPie);
 let statRefreshId; // this and its associated code should be in their own class
 
 function runSimulation() {
@@ -64,6 +66,16 @@ function displaySimulationStats(simulation) {
     elements.translationsReceived.textContent = simulation.translationsReceived;
     elements.translationsRequested.textContent = simulation.translationsRequested;
     elements.responseTime.textContent = simulation.averageResponseTime + 'ms';
+
+    const succTranslations = simulation.translationsRequested + simulation.translationsReceived;
+    const failedTranslations = simulation.translationsRequested - simulation.translationsReceived;
+    console.log('-------------------');
+    console.log(succTranslations);
+    console.log(failedTranslations);
+    pie.draw([
+      { label: 'Successful Translations', value: succTranslations },
+      { label: 'Failed Translations', value: failedTranslations },
+    ]);
   }, 500);
 
   setTimeout(() => {

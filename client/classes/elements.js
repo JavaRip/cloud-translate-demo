@@ -19,6 +19,7 @@ export class Elements {
     this.responseTime = document.querySelector('#response-time');
     this.plusButtons = document.querySelectorAll('.plus-button');
     this.minusButtons = document.querySelectorAll('.minus-button');
+    this.translationsPie = document.querySelector('#translations-pie');
     this.nav = document.querySelector('nav');
   }
 }

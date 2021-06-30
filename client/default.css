@@ -169,7 +169,6 @@ nav {
 #manual-translate > div > label[for=language-selector]  { grid-area: translationLabel; }
 #manual-translate > div > #language-selector            { grid-area: languageSelector; }
 
-
 #manual-translate > div > textarea {
   overflow: auto;
   resize: none;
@@ -199,7 +198,7 @@ nav {
   grid-template-columns: 1fr 1fr;
   width: 30rem;
   max-width: 100%;
-  height: max-content;
+  height: 15rem;
   padding: 2rem;
   grid-template-areas:
     "numClientsLabel durationLabel"
@@ -224,10 +223,41 @@ nav {
 #auto-translate > #all-languages {
   display: grid;
   row-gap: 1rem;
+  column-gap: 1rem;
   grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, auto);
   width: 30rem;
   max-width: 100%;
-  height: max-content;
+  height: 15rem;
   padding: 2rem;
 }
 
+#auto-translate > #all-languages > #start-all-languages-test {
+  margin: 0 auto;
+  width: max-content;
+}
+
+#auto-translate > #simulation-stats {
+  display: flex;
+  justify-content: space-around;
+  width: 35rem;
+  height: 15rem;
+}
+
+#auto-translate > #simulation-stats > #translations-pie {
+  height: 10rem;
+  width: 10rem;
+  margin: auto;
+}
+
+#auto-translate > #simulation-stats > #stat-labels {
+  width: 50%;
+  margin: auto 0;
+}
+
+#auto-translate > #all-languages > #start-all-languages-test,
+#auto-translate > #all-languages > #stop-all-languages-test,
+#auto-translate > #all-languages-test > label {
+  width: max-content;
+  margin: 0 auto;
+}

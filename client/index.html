@@ -75,14 +75,24 @@
     </div>
 
     <div id="simulation-stats" class="card">
-      <label for="translations-requested">Translations sent:</label>
-      <p id="translations-requested">-</p>
+      <canvas id="translations-pie"></canvas>
 
-      <label for="translations-received">Translations received:</label>
-      <p id="translations-received">-</p>
+      <div id="stat-labels">
+        <div>
+          <label for="translations-requested">Translations sent:</label>
+          <span id="translations-requested">-</span>
+        </div>
 
-      <label for="response-time">Average response time:</label>
-      <p id="response-time">-</p>
+        <div>
+          <label for="translations-received">Translations received:</label>
+          <span id="translations-received">-</span>
+        </div>
+
+        <div>
+          <label for="response-time">Avg response time:</label>
+          <span id="response-time">-</span>
+        </div>
+      </div>
     </div>
 </div>
 
