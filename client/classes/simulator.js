@@ -3,6 +3,12 @@ export class Simulator {
     this.clients = clients;
     this.runTime = runTime;
     this.boundStop = this.stop.bind(this);
+    window.dispatchEvent(new CustomEvent('simulationStarted', { detail: this }));
+
+    this.timeoutId = setTimeout(this.boundStop, this.runTime);
+    for (const client of this.clients) {
+      client.init();
+    }
 
     // stats
     this.translationsReceived = null;
@@ -10,17 +16,14 @@ export class Simulator {
     this.averageResponseTime = null;
   }
 
-  init() {
-    setTimeout(this.boundStop, this.runTime);
-    for (const client of this.clients) {
-      client.init();
-    }
-  }
-
   stop() {
     for (const client of this.clients) {
       client.stop();
     }
+    clearTimeout(this.timeoutId);
+
+    // this added to event so stop button knows which simulation to stop
+    window.dispatchEvent(new CustomEvent('simulationStopped'));
   }
 
   getStats() {

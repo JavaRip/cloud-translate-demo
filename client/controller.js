@@ -3,27 +3,34 @@ import { ManualTranslator } from './classes/manualTranslator.js';
 import { Simulator } from './classes/simulator.js';
 import { Elements } from './classes/elements.js';
 import { Navi } from './classes/navigator.js';
-import { Pie } from './classes/pie.js';
+import { StatDisplayer } from './classes/statDisplayer.js';
+
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
+
 const elements = new Elements();
-const pie = new Pie(elements.translationsPie);
-let statRefreshId; // this and its associated code should be in their own class
+const navigator = new Navi();
+const statDisplayer = new StatDisplayer(elements);
+const manualTranslator = new ManualTranslator(
+  elements.textToTranslate,
+  elements.translatedText,
+  elements.languageSelector,
+  'ws://' + window.location.hostname + ':' + window.location.port,
+);
 
 function runSimulation() {
   const clients = getClients(elements.numberOfClients.value);
   const duration = (Number(elements.simulationDuration.value) * 1000);
   const simulation = new Simulator(clients, duration);
   setSimulationButtons(simulation);
-  simulation.init();
-  displaySimulationStats(simulation);
+  statDisplayer.displayStats(simulation);
 }
 
 function setSimulationButtons(simulation) {
   for (const button of elements.stopButtons) {
     button.addEventListener('click', () => {
       simulation.stop();
-      window.clearInterval(statRefreshId);
+      statDisplayer.stopRefreshing();
       resetSimulationButtons();
     });
     button.style.display = '';
@@ -35,6 +42,7 @@ function setSimulationButtons(simulation) {
 }
 
 function resetSimulationButtons() {
+  // when simulation has stopped hide stop buttons show start buttons
   for (const button of elements.stopButtons) {
     button.style.display = 'none';
   }
@@ -60,49 +68,11 @@ function getClients(numClients) {
   return clients;
 }
 
-function displaySimulationStats(simulation) {
-  statRefreshId = setInterval(() => {
-    simulation.getStats();
-    elements.translationsReceived.textContent = simulation.translationsReceived;
-    elements.translationsRequested.textContent = simulation.translationsRequested;
-    elements.responseTime.textContent = simulation.averageResponseTime + 'ms';
-
-    const succTranslations = simulation.translationsRequested + simulation.translationsReceived;
-    const failedTranslations = simulation.translationsRequested - simulation.translationsReceived;
-    pie.draw([
-      { label: 'Successful Translations', value: succTranslations },
-      { label: 'Failed Translations', value: failedTranslations },
-    ]);
-  }, 500);
-
-  setTimeout(() => {
-    window.clearInterval(statRefreshId);
-    resetSimulationButtons();
-  }, simulation.runTime + 1000);
-}
-
-function initLanguageSelector() {
-  for (const language of languageCodes) {
-    const optionEl = document.createElement('option');
-    optionEl.value = language.code;
-    optionEl.textContent = `${language.name} [${language.code}]`;
-    elements.languageSelector.appendChild(optionEl);
-  }
-}
-
 function getWsAddr() {
   return 'ws://' + elements.translateServerAddr.value;
 }
 
 function addEventListeners() {
-  const manualTranslator = new ManualTranslator(
-    elements.textToTranslate,
-    elements.translatedText,
-    elements.languageSelector,
-    getWsAddr(),
-  );
-  const navigator = new Navi();
-
   elements.textToTranslate.addEventListener('keyup', () => {
     manualTranslator.requestTranslation();
   });
@@ -123,6 +93,14 @@ function addEventListeners() {
     navigator.parse(event, elements);
   });
 
+  window.addEventListener('simulationStarted', (event) => {
+    setSimulationButtons(event.detail);
+  });
+
+  window.addEventListener('simulationStopped', () => {
+    resetSimulationButtons();
+  });
+
   for (const button of elements.plusButtons) {
     button.addEventListener('click', () => {
       const input = button.parentNode.querySelector('input');
@@ -140,7 +118,7 @@ function addEventListeners() {
 }
 
 function init() {
-  initLanguageSelector();
+  manualTranslator.initLanguageSelector(languageCodes, elements.languageSelector);
   elements.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
   addEventListeners();
 }
