@@ -18,6 +18,7 @@
 
   <div id="config">
     <div class="card">
+      <h1>Config</h1>
       <span>
         <label for="translate-server-address">Translator server address:</label>
         <input type="text" id="translate-server-address"></input>
@@ -29,6 +30,7 @@
 
   <div id="manual-translate">
     <div class="card">
+      <h1>Manual Translate</h1>
       <label for="text-to-translate">Text to Translate</label>
       <textarea id="text-to-translate"></textarea>
 
@@ -41,6 +43,7 @@
   <div id="auto-translate">
     <div id="stress-test" class="card">
 
+      <h1>Stress Test</h1>
       <label for="num-clients-control">Speakers to simulate</label>
       <div id="num-clients-control" class="number-input">
         <button class="minus-button">-</button>
@@ -63,6 +66,8 @@
     </div>
 
     <div id="all-languages" class="card">
+
+      <h1>All Languages</h1>
       <label for="all-languages-duration-control">How long to run simulation for (seconds):</label>
       <div id="all-languages-duration-control" class="number-input">
         <button class="minus-button">-</button>
@@ -74,23 +79,26 @@
       <button id="stop-all-languages-test" class="stop-button" style="display: none">Stop Simulation</button>
     </div>
 
-    <div id="simulation-stats" class="card">
-      <canvas id="translations-pie"></canvas>
+    <div id="stats-card" class="card">
+      <h1>Simulation Stats</h1>
+      <div id="simulation-stats">
+        <canvas id="translations-pie"></canvas>
 
-      <div id="stat-labels">
-        <div>
-          <label for="translations-requested">Translations sent:</label>
-          <span id="translations-requested">-</span>
-        </div>
+        <div id="stat-labels">
+          <div>
+            <label for="translations-requested">Translations sent:</label>
+            <span id="translations-requested">-</span>
+          </div>
 
-        <div>
-          <label for="translations-received">Translations received:</label>
-          <span id="translations-received">-</span>
-        </div>
+          <div>
+            <label for="translations-received">Translations received:</label>
+            <span id="translations-received">-</span>
+          </div>
 
-        <div>
-          <label for="response-time">Avg response time:</label>
-          <span id="response-time">-</span>
+          <div>
+            <label for="response-time">Avg response time:</label>
+            <span id="response-time">-</span>
+          </div>
         </div>
       </div>
     </div>
