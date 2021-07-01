@@ -36,10 +36,8 @@ function listener(socket) {
     const msgObj = JSON.parse(msg);
     const translation = await translateText(msgObj.text, msgObj.target);
     const response = {
-      sourceText: translation.sourceText,
-      target: msgObj.target,
       translation: translation.translation,
-      reqTimeStamp: msgObj.reqTimeStamp,
+      request: msgObj,
     };
 
     socket.send(JSON.stringify(response));

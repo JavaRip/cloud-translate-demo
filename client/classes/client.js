@@ -43,7 +43,7 @@ export class Client {
 
   receiveTranslation(event) {
     const res = JSON.parse(event.data);
-    res.resTime = Number(Date.now()) - new Date(Number(res.reqTimeStamp));
+    res.resTime = Number(Date.now()) - new Date(Number(res.request.reqTimeStamp));
     this.translationsReceived.push(res);
   }
 }
