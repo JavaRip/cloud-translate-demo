@@ -3,7 +3,8 @@ export class Client {
     this.textArray = textArray; // lines of text to send to translator
     this.translatorWebsocket = translatorWebsocket;
     this.targetLanguage = targetLanguage;
-    this.translations = [];
+    this.translationsRequested = [];
+    this.translationsReceived = [];
     this.intervalId = null;
     this.intervalTime = textRate;
     this.boundRequestTranslation = null; // required for setInterval https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval#the_this_problem
@@ -26,10 +27,14 @@ export class Client {
   }
 
   requestTranslation() {
-    this.ws.send(JSON.stringify({
+    const translationRequest = {
       text: this.textArray[0],
       target: this.targetLanguage,
-    }));
+      reqTimeStamp: String(Date.now()),
+    };
+
+    this.ws.send(JSON.stringify(translationRequest));
+    this.translationsRequested.push(translationRequest);
 
     // rotate text array so next message is sent next
     const buffer = this.textArray.pop();
@@ -37,15 +42,8 @@ export class Client {
   }
 
   receiveTranslation(event) {
-    const translation = JSON.parse(event.data);
-    const sourceText = translation.original;
-    const translatedText = translation.translation;
-    this.translations.push(event.data);
-    console.log(`speakerId: ${this.intervalId},`);
-    console.log(`speakerRate: ${this.intervalTime},`);
-    console.log(`targetLanguage: ${this.targetLanguage}`);
-    console.log(`translation: ${translatedText}`);
-    console.log(`sourceText: ${sourceText}`);
-    console.log('//////');
+    const res = JSON.parse(event.data);
+    res.resTime = Number(Date.now()) - new Date(Number(res.request.reqTimeStamp));
+    this.translationsReceived.push(res);
   }
 }

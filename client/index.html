@@ -2,45 +2,106 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="default.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="default.css">
   <title>Cloud Translate Dashboard</title>
 </head>
 
 <body>
 
-<div id="config">
-  <span>
-    <label for="translate-server-address">Translator server address:</label>
-    <input type="text" id="translate-server-address"></input>
-  </span>
+<div id="wrapper" class="auto-translate">
+  <nav>
+    <span id="to-settings" class="nav-item">⚙️</span>
+    <span id="to-manual-translate" class="nav-item">🖱️</span>
+    <span id="to-simulation" class="nav-item selected">📈</span>
+  </nav>
 
-  <button id="server-address-update">Update Server Address</button>
-</div>
+  <div id="config">
+    <div class="card">
+      <h1>Config</h1>
+      <span>
+        <label for="translate-server-address">Translator server address:</label>
+        <input type="text" id="translate-server-address"></input>
+      </span>
 
-<div id="manual-translate">
-  <label for="text-to-translate">Text to Translate:</label>
-  <textarea id="text-to-translate"></textarea>
+      <button id="server-address-update">Update Server Address</button>
+    </div>
+  </div>
 
-  <label for="language-selector">Select language to translate to:</label>
+  <div id="manual-translate">
+    <div class="card">
+      <h1>Manual Translate</h1>
+      <label for="text-to-translate">Text to Translate</label>
+      <textarea id="text-to-translate"></textarea>
 
-  <select name="language" id="language-selector"></select>
+      <label for="translated-text">Translated Text</label>
+      <textarea id="translated-text" readonly></textarea>
+      <select name="language" id="language-selector"></select>
+    </div>
+  </div>
 
-  <p>Translated Text:</p>
-  <p id="translated-text"></p>
-</div>
+  <div id="auto-translate">
+    <div id="stress-test" class="card">
 
-<div id="auto-translate">
-  <span>
-    <label for="number-of-speakers">How many speakers to simulate:</label>
-    <input type="number" id="number-of-speakers"></input>
-  </span>
+      <h1>Stress Test</h1>
+      <label for="num-clients-control">Speakers to simulate</label>
+      <div id="num-clients-control" class="number-input">
+        <button class="minus-button">-</button>
+        <input type="text" id="number-of-clients"></input>
+        <button class="plus-button">+</button>
+      </div>
 
-  <span>
-    <label for="simulation-duration">How long to run simulation for (seconds):</label>
-    <input type="number" id="simulation-duration"></input>
-  </span>
+      <label for="stress-test-duration-control">Simulation duration (seconds)</label>
+      <div id="stress-test-duration-control" class="number-input">
+        <button class="minus-button">-</button>
+        <input type="text" id="simulation-duration"></input>
+        <button class="plus-button">+</button>
+      </div>
 
-  <button id="start-simulation">Start Simulation</button>
+      <span>
+      </span>
+
+      <button id="start-stress-test" class="start-button">Start Simulation</button>
+      <button id="stop-stress-test" class="stop-button" style="display: none">Stop Simulation</button>
+    </div>
+
+    <div id="all-languages" class="card">
+
+      <h1>All Languages</h1>
+      <label for="all-languages-duration-control">How long to run simulation for (seconds):</label>
+      <div id="all-languages-duration-control" class="number-input">
+        <button class="minus-button">-</button>
+        <input type="text" id="simulation-duration"></input>
+        <button class="plus-button">+</button>
+      </div>
+
+      <button id="start-all-languages-test" class="start-button">Start Simulation</button>
+      <button id="stop-all-languages-test" class="stop-button" style="display: none">Stop Simulation</button>
+    </div>
+
+    <div id="stats-card" class="card">
+      <h1>Simulation Stats</h1>
+      <div id="simulation-stats">
+        <canvas id="translations-pie"></canvas>
+
+        <div id="stat-labels">
+          <div>
+            <label for="translations-requested">Translations sent:</label>
+            <span id="translations-requested">-</span>
+          </div>
+
+          <div>
+            <label for="translations-received">Translations received:</label>
+            <span id="translations-received">-</span>
+          </div>
+
+          <div>
+            <label for="response-time">Avg response time:</label>
+            <span id="response-time">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 
 </body>

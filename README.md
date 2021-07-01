@@ -71,7 +71,11 @@ a WebSocket message in the following format:
 ```javascript
 {
   translation: 'text translated into target language',
-  original: 'source text sent to server'
+  request: {
+    text: 'text sent in original request',
+    target: 'target language sent in original request'
+    … // additional attributes
+  }
 }
 ```
 
