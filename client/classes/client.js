@@ -18,8 +18,9 @@ export class Client {
   }
 
   stop() {
-    this.ws.close();
     window.clearInterval(this.intervalId);
+
+    setTimeout(this.ws.close(), 1000);
   }
 
   openWebsocket() {
