@@ -20,7 +20,7 @@ export class Simulator {
     for (const client of this.clients) {
       client.stop();
     }
-    clearTimeout(this.timeoutId);
+    window.clearTimeout(this.timeoutId);
 
     // this added to event so stop button knows which simulation to stop
     window.dispatchEvent(new CustomEvent('simulationStopped'));

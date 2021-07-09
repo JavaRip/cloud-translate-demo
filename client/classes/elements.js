@@ -13,7 +13,8 @@ export class Elements {
     this.stopAllLanguagesTest = document.querySelector('#stop-all-languages-test');
     this.startButtons = document.querySelectorAll('.start-button');
     this.stopButtons = document.querySelectorAll('.stop-button');
-    this.simulationDuration = document.querySelector('#simulation-duration');
+    this.stressTestDuration = document.querySelector('#stress-test-duration');
+    this.allLangaugesTestDuration = document.querySelector('#all-languages-test-duration');
     this.translationsRequested = document.querySelector('#translations-requested');
     this.translationsReceived = document.querySelector('#translations-received');
     this.responseTime = document.querySelector('#response-time');

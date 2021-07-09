@@ -18,8 +18,11 @@ export class Client {
   }
 
   stop() {
-    this.ws.close();
+    // stop requesting translations
     window.clearInterval(this.intervalId);
+
+    // close websocket 1 second after requests have stopped to wait for responses
+    setTimeout(this.ws.close(), 1000);
   }
 
   openWebsocket() {

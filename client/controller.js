@@ -18,12 +18,52 @@ const manualTranslator = new ManualTranslator(
   'ws://' + window.location.hostname + ':' + window.location.port,
 );
 
-function runSimulation() {
-  const clients = getClients(elements.numberOfClients.value);
-  const duration = (Number(elements.simulationDuration.value) * 1000);
+function runAllLangaugesTest() {
+  const clients = getLanguageClients(languageCodes);
+  const duration = (Number(elements.allLangaugesTestDuration.value) * 1000);
   const simulation = new Simulator(clients, duration);
   setSimulationButtons(simulation);
   statDisplayer.displayStats(simulation);
+}
+
+function runStressTest() {
+  const clients = getRandomClients(elements.numberOfClients.value);
+  const duration = (Number(elements.stressTestDuration.value) * 1000);
+  const simulation = new Simulator(clients, duration);
+  setSimulationButtons(simulation);
+  statDisplayer.displayStats(simulation);
+}
+
+function getLanguageClients(languageCodes) {
+  const clients = [];
+
+  for (const language of languageCodes) {
+    // select target language at random
+    const targetLang = language.code;
+
+    // translate rate is 1000ms +/- 500ms (randomized)
+    const translateRate = 1000;
+    const newClient = new Client([...textList], getWsAddr(), targetLang, translateRate);
+    clients.push(newClient);
+  }
+
+  return clients;
+}
+
+function getRandomClients(numClients) {
+  const clients = [];
+
+  for (let i = 0; i < numClients; i += 1) {
+    // select target language at random
+    const targetLang = languageCodes[Math.floor(Math.random() * languageCodes.length)].code;
+
+    // translate rate is 1000ms +/- 500ms (randomized)
+    const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
+    const newClient = new Client([...textList], getWsAddr(), targetLang, translateRate);
+    clients.push(newClient);
+  }
+
+  return clients;
 }
 
 function setSimulationButtons(simulation) {
@@ -52,22 +92,6 @@ function resetSimulationButtons() {
   }
 }
 
-function getClients(numClients) {
-  const clients = [];
-
-  for (let i = 0; i < numClients; i += 1) {
-    // select target language at random
-    const targetLang = languageCodes[Math.floor(Math.random() * languageCodes.length)].code;
-
-    // translate rate is 1000ms +/- 500ms (randomized)
-    const translateRate = 1000 + Math.floor(((Math.random() - 0.5) * 500));
-    const newClient = new Client([...textList], getWsAddr(), targetLang, translateRate);
-    clients.push(newClient);
-  }
-
-  return clients;
-}
-
 function getWsAddr() {
   return 'ws://' + elements.translateServerAddr.value;
 }
@@ -86,15 +110,15 @@ function addEventListeners() {
   });
 
   elements.startStressTest.addEventListener('click', () => {
-    runSimulation();
+    runStressTest();
+  });
+
+  elements.startAllLanguagesTest.addEventListener('click', () => {
+    runAllLangaugesTest();
   });
 
   elements.nav.addEventListener('click', (event) => {
     navigator.parse(event, elements);
-  });
-
-  window.addEventListener('simulationStarted', (event) => {
-    setSimulationButtons(event.detail);
   });
 
   window.addEventListener('simulationStopped', () => {
