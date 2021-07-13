@@ -1,53 +1,27 @@
-// code adapted from https://cloud.google.com/translate/docs/basic/translating-text#translate_translate_text-nodejs
-// Imports the Google Cloud client library
-import ws from 'ws';
+import config from './config.js';
 import express from 'express';
-import http from 'http';
 import fs from 'fs';
-import Translate from '@google-cloud/translate';
-const translator = new Translate.v2.Translate();
 
 // setup express server
 const app = express();
+app.use(express.json({ limit: '1mb' }));
 app.use(express.static('client'));
-const server = http.createServer(app);
 
-// GOOGLE_APPLICATION_CREDENTIALS must point to a file containing credentials. Since this
-// file cannot be in the docker image for security, it is written at runtime from an
-// environment variable. See README for instructions on setting the env when running image
-// https://cloud.google.com/translate/docs/setup#using_the_service_account_key_file_in_your_environment
-if (!fs.existsSync('api_key.json')) {
-  fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
-} else if (fs.readFileSync('api_key.json', 'utf8') !== process.env.GOOGLE_APPLICATION_KEY) {
-  console.log('application key updated');
-  fs.writeFileSync('api_key.json', process.env.GOOGLE_APPLICATION_KEY);
-}
-process.env.GOOGLE_APPLICATION_CREDENTIALS = 'api_key.json';
+// logging
+function saveLogs(req, res) {
+  const simulationStart = new Date(req.body.logs.simulationStart);
+  const logDir = 'logs/';
+  const fileExentsion = '.json';
+  const filepath = logDir + simulationStart.toISOString() + fileExentsion;
 
-// websocket functions
-async function translateText(text, target) {
-  let [translations] = await translator.translate(text, target);
-  translations = Array.isArray(translations) ? translations : [translations];
-  return { translation: translations[0], sourceText: text };
+  fs.writeFileSync(filepath, JSON.stringify(req.body.logs));
+  res.json();
 }
 
-function listener(socket) {
-  socket.on('message', async (msg) => {
-    const msgObj = JSON.parse(msg);
-    const translation = await translateText(msgObj.text, msgObj.target);
-    const response = {
-      translation: translation.translation,
-      request: msgObj,
-    };
+// api
+app.get('/translatorPort', (_, res) => res.json(config.translatorPort));
+app.post('/saveLogs', express.json(), (req, res) => { saveLogs(req, res); });
 
-    socket.send(JSON.stringify(response));
-  });
-}
-
-// websocket init
-const wsServer = new ws.Server({ server: server });
-wsServer.on('connection', listener);
-
-// expose ports and websocket
-const PORT = process.env.PORT || 9999;
-server.listen(PORT, () => console.log(`server started on port ${PORT}`));
+// expose port
+const PORT = config.clientPort;
+app.listen(PORT, () => console.log(`client started on port ${PORT}`));

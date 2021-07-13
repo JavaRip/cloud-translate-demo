@@ -7,7 +7,7 @@
     "docker-build": "docker build . -t cloud-translate-image",
     "docker-run": "docker run --rm -d -P --env-file .env --name cloud-translate-container cloud-translate-image && docker port cloud-translate-container",
     "docker-stop": "docker stop cloud-translate-container",
-    "start": "nodemon server.js"
+    "start": "nodemon server.js & nodemon translator.js"
   },
   "author": "KaneSwartz",
   "license": "ISC",

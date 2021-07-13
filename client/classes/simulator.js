@@ -2,6 +2,7 @@ export class Simulator {
   constructor(clients, runTime) {
     this.clients = clients;
     this.runTime = runTime;
+    this.startTimestamp = Date.now();
     this.boundStop = this.stop.bind(this);
     window.dispatchEvent(new CustomEvent('simulationStarted', { detail: this }));
 
@@ -16,14 +17,19 @@ export class Simulator {
     this.averageResponseTime = null;
   }
 
-  stop() {
+  async stop() {
+    this.stopTimestamp = Date.now();
     for (const client of this.clients) {
       client.stop();
     }
     window.clearTimeout(this.timeoutId);
 
+    // wait for client websockets to close
+    await this.wait(1000);
+
     // this added to event so stop button knows which simulation to stop
-    window.dispatchEvent(new CustomEvent('simulationStopped'));
+    const logs = this.aggregateLogs();
+    window.dispatchEvent(new CustomEvent('simulationStopped', { detail: logs }));
   }
 
   getStats() {
@@ -62,5 +68,19 @@ export class Simulator {
     const averageResTime = Math.floor(allResTimesSum / allResTimes.length);
 
     return averageResTime;
+  }
+
+  aggregateLogs() {
+    const simulationLog = {};
+    simulationLog.simulationStart = this.startTimestamp;
+    simulationLog.simualationStop = this.stopTimestamp;
+    for (let i = 0; i < this.clients.length; i += 1) {
+      simulationLog[`client${i}`] = this.clients[i];
+    }
+    return simulationLog;
+  }
+
+  wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
