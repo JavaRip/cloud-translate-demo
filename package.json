@@ -16,7 +16,8 @@
     "express": "^4.17.1",
     "http": "0.0.1-security",
     "prompt-sync": "^4.2.0",
-    "ws": "^7.5.0"
+    "ws": "^7.5.0",
+    "zx": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^7.28.0",
