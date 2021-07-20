@@ -14,6 +14,10 @@ export class Navi {
         this.resetNav(elements, event.target);
         elements.wrapper.classList.add('manual-translate');
         break;
+      case 'to-logs':
+        this.resetNav(elements, event.target);
+        elements.wrapper.classList.add('logs');
+        break;
     }
   }
 

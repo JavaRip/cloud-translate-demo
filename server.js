@@ -23,7 +23,17 @@ async function saveLogs(req, res) {
 
 async function getLogs(_, res) {
   await $`aws s3 sync s3://cloud-translate-bucket logs/`;
-  res.json();
+  const logDir = './logs';
+  const logFilenames = fs.readdirSync(logDir);
+  const logFiles = [];
+
+  for (const filename of logFilenames) {
+    const file = fs.readFileSync(`${logDir}/${filename}`);
+    const fileObj = JSON.parse(file);
+    logFiles.push(fileObj);
+  }
+
+  res.json(logFiles);
 }
 
 // api

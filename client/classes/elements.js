@@ -17,6 +17,7 @@ export class Elements {
     this.allLangaugesTestDuration = document.querySelector('#all-languages-test-duration');
     this.translationsRequested = document.querySelector('#translations-requested');
     this.translationsReceived = document.querySelector('#translations-received');
+    this.logs = document.querySelector('#logs');
     this.responseTime = document.querySelector('#response-time');
     this.plusButtons = document.querySelectorAll('.plus-button');
     this.minusButtons = document.querySelectorAll('.minus-button');

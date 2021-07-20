@@ -151,10 +151,20 @@ function addEventListeners() {
   }
 }
 
-async function init() {
+async function loadLogs() {
+  const logs = await logger.getLogs();
+  elements.logs.textContent = JSON.stringify(logs);
+}
+
+async function getTranslatorPort() {
   const res = await fetch('/translatorPort');
-  const translatorPort = await res.json();
-  elements.translateServerAddr.value = window.location.hostname + ':' + translatorPort;
+  return await res.json();
+}
+
+async function init() {
+  const translatorPort = await getTranslatorPort();
+  loadLogs();
+  elements.translateServerAddr.value = `${window.location.hostname}:${translatorPort}`;
   manualTranslator.init(languageCodes, elements.languageSelector, getWsAddr());
   addEventListeners();
 }

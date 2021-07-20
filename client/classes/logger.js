@@ -9,4 +9,9 @@ export class Logger {
     if (response.ok) return true;
     else console.error('Failed to send logs to server.');
   }
+
+  async getLogs() {
+    const res = await fetch('/logs');
+    return await res.json(res);
+  }
 }
