@@ -104,5 +104,29 @@
   <div id="logs"></div>
 </div>
 
+<template id="simulationLog">
+  <div class="simulationLogRow">
+    <span class="translatorAddress"></span>
+    <span class="startTime"></span>
+    <span class="duration"></span>
+    <span class="totalTranslationsSent"></span>
+    <span class="totalTranslationsReceived"></span>
+    <div class="clientLogs"></div>
+  </div>
+</template>
+
+<template id="clientLog">
+  <div class="clientLogRow">
+    <span class="targetLang"></span>
+    <span class="translationsSent"></span>
+    <span class="translationsReceived"></span>
+    <span class="translationLogs"><span>
+  </div>
+</template>
+
+<template id="translationLog">
+  <div class="translationLogRow"></div>
+</template>
+
 </body>
 <script src="controller.js" type="module"></script>

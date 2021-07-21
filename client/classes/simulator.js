@@ -73,9 +73,10 @@ export class Simulator {
   aggregateLogs() {
     const simulationLog = {};
     simulationLog.simulationStart = this.startTimestamp;
-    simulationLog.simualationStop = this.stopTimestamp;
-    for (let i = 0; i < this.clients.length; i += 1) {
-      simulationLog[`client${i}`] = this.clients[i];
+    simulationLog.simulationStop = this.stopTimestamp;
+    simulationLog.clients = [];
+    for (const client of this.clients) {
+      simulationLog.clients.push(client);
     }
     return simulationLog;
   }

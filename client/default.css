@@ -106,6 +106,7 @@ nav {
   height: inherit;
   justify-content: center;
   background: var(--lighter-bg-color);
+  max-height: 60rem;
 }
 
 .nav-item {
@@ -277,3 +278,10 @@ nav {
   width: max-content;
   margin: 0 auto;
 }
+
+.simulationLogRow > .translatorAddress::before { content: 'Translator address: '; }
+.simulationLogRow > .startTime::before { content: 'Simulation start time: '; }
+.simulationLogRow > .duration::before { content: 'Simulation duration '; }
+.simulationLogRow > .duration::after { content: ' (Seconds)'; }
+.simulationLogRow > .translationsSent::before { content: 'Translations Requested:'; }
+.simulationLogRow > .translationsReceived::before { content: 'Translations Received:'; }

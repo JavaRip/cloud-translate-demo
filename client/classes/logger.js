@@ -11,7 +11,8 @@ export class Logger {
   }
 
   async getLogs() {
-    const res = await fetch('/logs');
-    return await res.json(res);
+    const response = await fetch('/logs');
+    if (response.ok) return await response.json(response);
+    else console.error('Failed to get logs from server');
   }
 }

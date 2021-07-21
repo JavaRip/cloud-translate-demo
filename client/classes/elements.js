@@ -23,5 +23,8 @@ export class Elements {
     this.minusButtons = document.querySelectorAll('.minus-button');
     this.translationsPie = document.querySelector('#translations-pie');
     this.nav = document.querySelector('nav');
+    this.simulationLog = document.querySelector('#simulationLog');
+    this.clientLog = document.querySelector('#clientLog');
+    this.translationLog = document.querySelector('#translationLog');
   }
 }
