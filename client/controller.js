@@ -152,50 +152,8 @@ function addEventListeners() {
 }
 
 async function loadLogs() {
-  // get logs
   const logs = await logger.getLogs();
-
-  // display logs
-  for (const log of logs) {
-    const logRowTemplate = document.importNode(elements.simulationLog.content, true);
-    const logRow = logRowTemplate.querySelector('.simulationLogRow');
-    const clientLogsDiv = logRowTemplate.querySelector('.clientLogs');
-
-    // format data to display
-    const translatorAddress = log.clients[0].translatorWebsocket;
-    const duration =
-      ((Number(log.simulationStop) - Number(log.simulationStart)) / 1000).toFixed(2);
-    const startTime = new Date(log.simulationStart).toISOString();
-
-    // display formatted data
-    logRow.querySelector('.translatorAddress').textContent = translatorAddress;
-    logRow.querySelector('.startTime').textContent = startTime;
-    logRow.querySelector('.duration').textContent = duration;
-    // logRow.querySelector('.totalTranslationsSent').textContent = translations;
-    // logRow.querySelector('.totalTranslationsReceived').textContent = duration;
-    console.log(log);
-
-    for (const client of log.clients) {
-      const clientLogRowTemplate = document.importNode(elements.clientLog.content, true);
-      const clientLogRow = clientLogRowTemplate.querySelector('.clientLogRow');
-      const translationsRequested = client.translationsRequested.length;
-      const translationsReceived = client.translationsReceived.length;
-      console.log(translationsRequested);
-
-      clientLogRow.querySelector('.targetLang').textContent = client.targetLanguage;
-      clientLogRow.querySelector('.translationsSent').textContent = translationsRequested;
-      clientLogRow.querySelector('.translationsReceived').textContent = translationsReceived;
-      // CONSole.log(client);
-
-      // logRow.querySelector('.tranlsationsSent').textContent = ;
-      // logRow.querySelector('.tranlsationsReceived').textContent = ;
-      // logRow.textContent = JSON.stringify(log);
-
-      clientLogsDiv.appendChild(clientLogRow);
-    }
-
-    elements.logs.appendChild(logRow);
-  }
+  logger.displayLogs(logs, elements.simulationLog, elements.clientLog, elements.logs);
 }
 
 async function getTranslatorPort() {
