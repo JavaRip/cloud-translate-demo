@@ -64,7 +64,7 @@ export class Logger extends StatGenerator {
 
           if (response) {
             translationLogRow.querySelector('.response').textContent = response.translation;
-            translationLogRow.querySelector('.timeTaken').textContent = `${response.resTime} seconds`;
+            translationLogRow.querySelector('.timeTaken').textContent = `${response.resTime}ms`;
           } else {
             translationLogRow.querySelector('.response').classList.add('noTranslation');
             translationLogRow.querySelector('.response').textContent = 'Translation not received';

@@ -106,7 +106,7 @@ nav {
   height: inherit;
   justify-content: center;
   background: var(--lighter-bg-color);
-  height: 50rem;
+  height: 100%;
 }
 
 .nav-item {
