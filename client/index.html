@@ -9,12 +9,12 @@
 
 <body>
 
-<div id="wrapper" class="auto-translate">
+<div id="wrapper" class="logs">
   <nav>
     <span id="to-settings" class="nav-item">⚙️</span>
     <span id="to-manual-translate" class="nav-item">🖱️</span>
-    <span id="to-simulation" class="nav-item selected">📈</span>
-    <span id="to-logs" class="nav-item">📜</span>
+    <span id="to-simulation" class="nav-item">📈</span>
+    <span id="to-logs" class="nav-item selected">📜</span>
   </nav>
 
   <div id="config">
@@ -73,8 +73,13 @@
         <button class="plus-button">+</button>
       </div>
 
-      <button id="start-all-languages-test" class="start-button">Start Simulation</button>
-      <button id="stop-all-languages-test" class="stop-button" style="display: none">Stop Simulation</button>
+      <button id="start-all-languages-test" class="start-button">
+        Start Simulation
+      </button>
+
+      <button id="stop-all-languages-test" class="stop-button" style="display: none">
+        Stop Simulation
+      </button>
     </div>
 
     <div id="stats-card" class="card">
@@ -109,18 +114,28 @@
     <span class="translatorAddress"></span>
     <span class="startTime"></span>
     <span class="duration"></span>
-    <span class="totalTranslationsSent"></span>
+    <span class="totalTranslationsRequested"></span>
     <span class="totalTranslationsReceived"></span>
-    <div class="clientLogs"></div>
+    <span class="averageResponseTime"></span>
+    <span class="clientLogsHeading">ClientLogs</span>
+    <div class="clientLogs">
+      <div id="clientLogHeaders" class="clientLogRow">
+        <span>TargetLanguage</span>
+        <span>Requested</span>
+        <span>Received</span>
+        <span></span>
+      </div>
+    </div>
   </div>
 </template>
 
 <template id="clientLog">
   <div class="clientLogRow">
     <span class="targetLang"></span>
-    <span class="translationsSent"></span>
+    <span class="translationsRequested"></span>
     <span class="translationsReceived"></span>
-    <span class="translationLogs"><span>
+    <span class="translationLogsHeading">Requests Log</span>
+    <div class="translationLogs"><div>
   </div>
 </template>
 

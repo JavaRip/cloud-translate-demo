@@ -38,29 +38,37 @@ export class Logger extends StatGenerator {
       logRow.querySelector('.translatorAddress').textContent = translatorAddress;
       logRow.querySelector('.startTime').textContent = startTime;
       logRow.querySelector('.duration').textContent = duration;
-      logRow.querySelector('.totalTranslationsSent').textContent = totalRequests;
+      logRow.querySelector('.totalTranslationsRequested').textContent = totalRequests;
       logRow.querySelector('.totalTranslationsReceived').textContent = totalReceipts;
+      logRow.querySelector('.averageResponseTime').textContent = avgResponseTime;
 
       for (const client of log.clients) {
         const clientLogRowTemplate = document.importNode(clientLog.content, true);
         const clientLogRow = clientLogRowTemplate.querySelector('.clientLogRow');
         const translationsRequested = client.translationsRequested.length;
         const translationsReceived = client.translationsReceived.length;
-        console.log(translationsRequested);
 
         clientLogRow.querySelector('.targetLang').textContent = client.targetLanguage;
-        clientLogRow.querySelector('.translationsSent').textContent = translationsRequested;
+        clientLogRow.querySelector('.translationsRequested').textContent = translationsRequested;
         clientLogRow.querySelector('.translationsReceived').textContent = translationsReceived;
-        console.log(client);
 
-        // logRow.querySelector('.tranlsationsSent').textContent = ;
-        // logRow.querySelector('.tranlsationsReceived').textContent = ;
-        // logRow.textContent = JSON.stringify(log);
+        for (const request of client.translationsRequested) {
+          const requestLogsEl = clientLogRow.querySelector('.translationLogs');
+          requestLogsEl.textContent = JSON.stringify(request);
+        }
 
         clientLogsEl.appendChild(clientLogRow);
       }
 
       logsEl.appendChild(logRow);
+    }
+
+    const dropDownSelectors = ['.clientLogsHeading', '.translationLogsHeading'];
+
+    for (const dropDown of document.querySelectorAll(dropDownSelectors)) {
+      dropDown.addEventListener('click', (event) => {
+        event.target.classList.toggle('selected');
+      });
     }
   }
 }

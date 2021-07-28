@@ -153,7 +153,7 @@ function addEventListeners() {
 
 async function loadLogs() {
   const logs = await logger.getLogs();
-  logger.displayLogs(logs, elements.simulationLog, elements.clientLog, elements.logs);
+  logger.displayLogs(logs, elements.logs, elements.simulationLog, elements.clientLog);
 }
 
 async function getTranslatorPort() {
