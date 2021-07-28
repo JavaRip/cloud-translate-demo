@@ -390,13 +390,40 @@ nav {
 /* Translation logs */
 
 .translationLogs {
+  /* child properties */
   overflow: hidden;
-}
+  grid-column-start: 1;
+  grid-column-end: 5;
 
-.translationLogs {
+  /* parent properties */
+  display: flex;
+  flex-direction: column;
+
+  /* other properties */
   height: 0;
+  width: calc(80% + 5em);
 }
 
 .translationLogsHeading.selected ~ .translationLogs {
   height: auto;
+  margin: 2em auto;
+  border-top: 0.1em solid var(--main-fg-color);
+  border-bottom: 0.1em solid var(--main-fg-color);
+}
+
+.translationLogRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0.8em 0;
+  padding: 0 0.8rem 0.2rem 0.8rem;
+  border-bottom: 0.1rem dashed var(--main-fg-color);
+}
+
+.noTranslation {
+  color: var(--red);
+  font-style: italic;
+}
+
+.translationLogRow:first-of-type {
+  font-weight: bold;
 }

@@ -18,7 +18,7 @@ export class Logger extends StatGenerator {
     else console.error('Failed to get logs from server');
   }
 
-  displayLogs(logs, logsEl, simulationLog, clientLog) {
+  displayLogs(logs, logsEl, simulationLog, clientLog, translationLog) {
     // display logs
     for (const log of logs) {
       const logRowTemplate = document.importNode(simulationLog.content, true);
@@ -45,6 +45,8 @@ export class Logger extends StatGenerator {
       for (const client of log.clients) {
         const clientLogRowTemplate = document.importNode(clientLog.content, true);
         const clientLogRow = clientLogRowTemplate.querySelector('.clientLogRow');
+        const requestLogsEl = clientLogRow.querySelector('.translationLogs');
+
         const translationsRequested = client.translationsRequested.length;
         const translationsReceived = client.translationsReceived.length;
 
@@ -53,13 +55,26 @@ export class Logger extends StatGenerator {
         clientLogRow.querySelector('.translationsReceived').textContent = translationsReceived;
 
         for (const request of client.translationsRequested) {
-          const requestLogsEl = clientLogRow.querySelector('.translationLogs');
-          requestLogsEl.textContent = JSON.stringify(request);
-        }
+          const translationLogTemplate = document.importNode(translationLog.content, true);
+          const translationLogRow = translationLogTemplate.querySelector('.translationLogRow');
 
+          const response = findResponse(request, client.translationsReceived);
+
+          translationLogRow.querySelector('.request').textContent = request.text;
+
+          if (response) {
+            translationLogRow.querySelector('.response').textContent = response.translation;
+            translationLogRow.querySelector('.timeTaken').textContent = `${response.resTime} seconds`;
+          } else {
+            translationLogRow.querySelector('.response').classList.add('noTranslation');
+            translationLogRow.querySelector('.response').textContent = 'Translation not received';
+            translationLogRow.querySelector('.timeTaken').textContent = 'N/A';
+          }
+
+          requestLogsEl.appendChild(translationLogRow);
+        }
         clientLogsEl.appendChild(clientLogRow);
       }
-
       logsEl.appendChild(logRow);
     }
 
@@ -69,6 +84,18 @@ export class Logger extends StatGenerator {
       dropDown.addEventListener('click', (event) => {
         event.target.classList.toggle('selected');
       });
+    }
+
+    function findResponse(request, responses) {
+      // search for response in list of responses and return when found
+      for (const response of responses) {
+        if (JSON.stringify(response.request) === JSON.stringify(request)) {
+          return response;
+        }
+      }
+
+      // if reponse not found return
+      return false;
     }
   }
 }

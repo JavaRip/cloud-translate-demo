@@ -135,12 +135,22 @@
     <span class="translationsRequested"></span>
     <span class="translationsReceived"></span>
     <span class="translationLogsHeading">Requests Log</span>
-    <div class="translationLogs"><div>
+    <div class="translationLogs">
+      <div id="translationLogHeaders" class="translationLogRow">
+        <span>Request</span>
+        <span>Response</span>
+        <span>Time</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <template id="translationLog">
-  <div class="translationLogRow"></div>
+  <div class="translationLogRow">
+    <span class="request"></span>
+    <span class="response"></span>
+    <span class="timeTaken"></span>
+  </div>
 </template>
 
 </body>
