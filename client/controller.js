@@ -4,18 +4,20 @@ import { Simulator } from './classes/simulator.js';
 import { Elements } from './classes/elements.js';
 import { Navi } from './classes/navigator.js';
 import { StatDisplayer } from './classes/statDisplayer.js';
+import { Logger } from './classes/logger.js';
 
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
 
+let runningSimulation = false; // can be false or a simulation
 const elements = new Elements();
 const navigator = new Navi();
 const statDisplayer = new StatDisplayer(elements);
+const logger = new Logger();
 const manualTranslator = new ManualTranslator(
   elements.textToTranslate,
   elements.translatedText,
   elements.languageSelector,
-  'ws://' + window.location.hostname + ':' + window.location.port,
 );
 
 function runAllLangaugesTest() {
@@ -66,19 +68,21 @@ function getRandomClients(numClients) {
   return clients;
 }
 
-function setSimulationButtons(simulation) {
+function setSimulationButtons() {
   for (const button of elements.stopButtons) {
-    button.addEventListener('click', () => {
-      simulation.stop();
-      statDisplayer.stopRefreshing();
-      resetSimulationButtons();
-    });
+    button.addEventListener('click', stopSimulation);
     button.style.display = '';
   }
 
   for (const button of elements.startButtons) {
     button.style.display = 'none';
   }
+}
+
+function stopSimulation() {
+  runningSimulation.stop();
+  statDisplayer.stopRefreshing();
+  resetSimulationButtons();
 }
 
 function resetSimulationButtons() {
@@ -121,8 +125,14 @@ function addEventListeners() {
     navigator.parse(event, elements);
   });
 
-  window.addEventListener('simulationStopped', () => {
+  window.addEventListener('simulationStarted', (event) => {
+    runningSimulation = event.detail;
+  });
+
+  window.addEventListener('simulationStopped', (event) => {
+    runningSimulation = false;
     resetSimulationButtons();
+    logger.saveLogs(event.detail);
   });
 
   for (const button of elements.plusButtons) {
@@ -141,9 +151,27 @@ function addEventListeners() {
   }
 }
 
-function init() {
-  manualTranslator.initLanguageSelector(languageCodes, elements.languageSelector);
-  elements.translateServerAddr.value = window.location.hostname + ':' + window.location.port;
+async function loadLogs() {
+  const logs = await logger.getLogs();
+  logger.displayLogs(
+    logs,
+    elements.logs,
+    elements.simulationLog,
+    elements.clientLog,
+    elements.translationLog,
+  );
+}
+
+async function getTranslatorPort() {
+  const res = await fetch('/translatorPort');
+  return await res.json();
+}
+
+async function init() {
+  const translatorPort = await getTranslatorPort();
+  loadLogs();
+  elements.translateServerAddr.value = `${window.location.hostname}:${translatorPort}`;
+  manualTranslator.init(languageCodes, elements.languageSelector, getWsAddr());
   addEventListeners();
 }
 

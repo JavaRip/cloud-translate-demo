@@ -17,10 +17,14 @@ export class Elements {
     this.allLangaugesTestDuration = document.querySelector('#all-languages-test-duration');
     this.translationsRequested = document.querySelector('#translations-requested');
     this.translationsReceived = document.querySelector('#translations-received');
+    this.logs = document.querySelector('#logs');
     this.responseTime = document.querySelector('#response-time');
     this.plusButtons = document.querySelectorAll('.plus-button');
     this.minusButtons = document.querySelectorAll('.minus-button');
     this.translationsPie = document.querySelector('#translations-pie');
     this.nav = document.querySelector('nav');
+    this.simulationLog = document.querySelector('#simulationLog');
+    this.clientLog = document.querySelector('#clientLog');
+    this.translationLog = document.querySelector('#translationLog');
   }
 }

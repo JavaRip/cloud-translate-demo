@@ -85,6 +85,7 @@ body {
 #wrapper.config           > :not(#config, nav)           { display: none; }
 #wrapper.manual-translate > :not(#manual-translate, nav) { display: none; }
 #wrapper.auto-translate   > :not(#auto-translate, nav)   { display: none; }
+#wrapper.logs             > :not(#logs, nav)             { display: none; }
 
 #wrapper {
   display: grid;
@@ -105,6 +106,7 @@ nav {
   height: inherit;
   justify-content: center;
   background: var(--lighter-bg-color);
+  height: 100%;
 }
 
 .nav-item {
@@ -275,4 +277,153 @@ nav {
 #auto-translate > #all-languages-test > label {
   width: max-content;
   margin: 0 auto;
+}
+
+#logs {
+  overflow: auto;
+}
+
+.simulationLogRow {
+  display: grid;
+  grid-template-areas:
+    'startTime duration .'
+    'translatorAddress . .'
+    'totalRequested totalReceived avgResponseTime'
+    'clientLogsHeading . .'
+    'clientLogs clientLogs clientLogs'
+  ;
+  margin: 2rem 1rem;
+  padding: 0.5rem;
+  background-color: var(--lighter-bg-color);
+  width: calc(90% + 5rem);
+  max-width: 95%;
+  border: solid 0.1rem var(--main-fg-color);
+  margin: 2rem auto;
+}
+
+/* simulation grid area placement & positioning */
+.simulationLogRow > .startTime { grid-area: startTime; }
+.simulationLogRow > .duration { grid-area: duration; }
+.simulationLogRow > .translatorAddress { grid-area: translatorAddress; }
+.simulationLogRow > .totalTranslationsRequested { grid-area: totalRequested; }
+.simulationLogRow > .totalTranslationsReceived { grid-area: totalReceived; }
+.simulationLogRow > .averageResponseTime { grid-area: avgResponseTime; }
+.simulationLogRow > .clientLogsHeading { grid-area: clientLogsHeading; }
+.simulationLogRow > .clientLogs { grid-area: clientLogs; }
+
+/* simulation pseudo classes for labels */
+.simulationLogRow > .translatorAddress::before { content: 'Translator address: '; }
+.simulationLogRow > .duration::before { content: 'Duration: '; }
+.simulationLogRow > .duration::after { content: ' (Seconds)'; }
+.simulationLogRow > .totalTranslationsRequested::before { content: 'Translations Requested: '; }
+.simulationLogRow > .totalTranslationsReceived::before { content: 'Translations Received: '; }
+.simulationLogRow > .averageResponseTime::before { content: 'Average Response Time: '; }
+
+.clientLogsHeading {
+  font-weight: bold;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.clientLogsHeading::after {
+  content: ' ˇ';
+  top: 0.5em;
+  position: relative;
+}
+
+.clientLogsHeading.selected::after {
+  content: ' ^';
+}
+
+/* styling to expand & collapse client logs */
+.simulationLogRow > .clientLogs {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.simulationLogRow > .clientLogsHeading.selected ~ .clientLogs {
+  max-height: 1000rem;
+  animation: expand 1s forwards;
+}
+
+@keyframes expand {
+  0% { max-height: 0; }
+  90% { max-height: 100vh; }
+  100% { max-height: 1000rem; }
+}
+
+/* client grid area placement & positioning */
+
+.clientLogs {
+  display: flex;
+  flex-direction: column;
+}
+
+.clientLogRow:first-of-type {
+  font-weight: bold;
+}
+
+.clientLogRow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+}
+
+.translationLogsHeading::after {
+  content: ' ˇ';
+  top: 0.5em;
+  position: relative;
+}
+
+.translationLogsHeading.selected::after {
+  content: ' ^';
+}
+
+.clientLogRow.selected::after,
+.clientLogRow::after {
+  top: 0.6em;
+  position: relative;
+  line-height: 0.7em;
+  font-size: 1.5em;
+}
+
+/* Translation logs */
+
+.translationLogs {
+  /* child properties */
+  overflow: hidden;
+  grid-column-start: 1;
+  grid-column-end: 5;
+
+  /* parent properties */
+  display: flex;
+  flex-direction: column;
+
+  /* other properties */
+  height: 0;
+  width: calc(80% + 5em);
+}
+
+.translationLogsHeading.selected ~ .translationLogs {
+  height: auto;
+  margin: 2em auto;
+  border-top: 0.1em solid var(--main-fg-color);
+  border-bottom: 0.1em solid var(--main-fg-color);
+}
+
+.translationLogRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  margin: 0.8em 0;
+  padding: 0 0.8rem 0.2rem 0.8rem;
+  border-bottom: 0.1rem dashed var(--main-fg-color);
+}
+
+.noTranslation {
+  color: var(--red);
+  font-style: italic;
+}
+
+.translationLogRow:first-of-type {
+  font-weight: bold;
 }

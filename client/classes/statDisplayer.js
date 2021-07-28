@@ -27,8 +27,6 @@ export class StatDisplayer extends Pie {
 
     setTimeout(() => {
       window.clearInterval(this.statRefreshId);
-      // reset simulation buttons with dispatch event simulation ended
-      // resetSimulationButtons();
     }, simulation.runTime + 1000);
   }
 
