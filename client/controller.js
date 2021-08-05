@@ -97,7 +97,7 @@ function resetSimulationButtons() {
 }
 
 function getWsAddr() {
-  return 'ws://' + elements.translateServerAddr.value;
+  return elements.translateServerAddr.value;
 }
 
 function addEventListeners() {
@@ -170,7 +170,7 @@ async function getTranslatorPort() {
 async function init() {
   const translatorPort = await getTranslatorPort();
   loadLogs();
-  elements.translateServerAddr.value = `${window.location.hostname}:${translatorPort}`;
+  elements.translateServerAddr.value = `ws://${window.location.hostname}:${translatorPort}`;
   manualTranslator.init(languageCodes, elements.languageSelector, getWsAddr());
   addEventListeners();
 }
