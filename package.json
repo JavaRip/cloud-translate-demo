@@ -4,10 +4,10 @@
   "description": "Google Cloud Translation API demo",
   "main": "script.js",
   "scripts": {
-    "docker-build": "docker build . -t cloud-translate-image",
-    "docker-run": "docker run --rm -d -P --env-file .env --name cloud-translate-container cloud-translate-image && docker port cloud-translate-container",
-    "docker-stop": "docker stop cloud-translate-container",
-    "start": "nodemon --ignore 'logs/*' server.js & nodemon --ignore 'logs/*' translator.js"
+    "docker-build": "docker build . -t cloud-translate-front-end-image",
+    "docker-run": "docker run --rm -d -P --env-file .env --name cloud-translate-front-end-container cloud-translate-front-end-image && docker port cloud-translate-front-end-container",
+    "docker-stop": "docker stop cloud-translate-front-end-container",
+    "start": "nodemon --ignore 'logs/*' server.js"
   },
   "author": "KaneSwartz",
   "license": "ISC",
