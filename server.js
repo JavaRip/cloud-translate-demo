@@ -1,4 +1,3 @@
-import config from './config.js';
 import express from 'express';
 import fs from 'fs';
 import { $ } from 'zx';
@@ -42,5 +41,5 @@ app.post('/saveLogs', express.json(), (req, res) => { saveLogs(req, res); });
 app.get('/logs', (_, res) => { getLogs(_, res); });
 
 // expose port
-const PORT = config.clientPort;
+const PORT = process.env.port || 8080;
 app.listen(PORT, () => console.log(`client started on port ${PORT}`));
