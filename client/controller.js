@@ -97,7 +97,10 @@ function resetSimulationButtons() {
 }
 
 function getWsAddr() {
-  return elements.translateServerAddr.value;
+  elements.translateServerPreview.textContent = `
+    ${elements.translateServerProtocol.value}://${elements.translateServerAddr.value}:${elements.translateServerPort.value}
+  `;
+  return elements.translateServerPreview.textContent;
 }
 
 function addEventListeners() {
@@ -151,6 +154,17 @@ function addEventListeners() {
   }
 }
 
+function setTranslateServer() {
+  elements.translateServerProtocol.value = 'ws';
+  elements.translateServerAddr.value = `${window.location.hostname}`;
+  elements.translateServerPort.value = '9999';
+  elements.translateServerPreview.textContent = `
+    ${elements.translateServerProtocol.value}://
+    ${elements.translateServerAddr.value}:
+    ${elements.translateServerPort.value}
+  `;
+}
+
 async function loadLogs() {
   const logs = await logger.getLogs();
   logger.displayLogs(
@@ -164,10 +178,7 @@ async function loadLogs() {
 
 function init() {
   loadLogs();
-  elements.translateServerProtocol.value = 'ws';
-  elements.translateServerAddr.value = `${window.location.hostname}`;
-  elements.translateServerPort.value = '9999';
-  elements.translateServerPreview.textContent = `${elements.translateServerProtocol.value}://${elements.translateServerAddr.value}:${elements.translateServerPort.value}`;
+  setTranslateServer();
   manualTranslator.init(languageCodes, elements.languageSelector, getWsAddr());
   addEventListeners();
 }
