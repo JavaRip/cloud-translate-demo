@@ -5,6 +5,7 @@
   --main-fg-color: rgb(20, 20, 20);
   --lighter-fg-color: rgb(80, 80, 80);
   --red: crimson;
+  --blue: navy;
   --green: darkolivegreen;
 }
 
@@ -138,16 +139,41 @@ nav {
   width: 100%;
 }
 
-#config > div {
+#config > .card {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 11rem;
+  padding: 2em;
+  height: 25em;
+  max-height: 90%;
+  width: 40em;
+  max-width: 90%;
 }
 
-#config > div > #server-address-update {
-  width: max-content;
-  margin: 0 auto;
+#config-params {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 1em;
+  column-gap: 1em;
+  width: min-content;
+  margin: 1.5em 0;
+}
+
+#config-params > label {
+  white-space: nowrap;
+  position: relative;
+  top: 0.5em;
+}
+
+#translate-server-address-preview::before {
+  content: 'Preview: ';
+  color: var(--main-fg-color);
+}
+
+#translate-server-address-preview {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  color: var(--blue);
 }
 
 #manual-translate {
@@ -197,10 +223,6 @@ nav {
 
 #language-selector {
   width: 10rem;
-}
-
-#translate-server-address {
-  height: 1rem;
 }
 
 #auto-translate > #stress-test {

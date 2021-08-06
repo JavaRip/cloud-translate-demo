@@ -9,21 +9,30 @@
 
 <body>
 
-<div id="wrapper" class="logs">
+<div id="wrapper" class="config">
   <nav>
-    <span id="to-settings" class="nav-item">⚙️</span>
+    <span id="to-settings" class="nav-item selected">⚙️</span>
     <span id="to-manual-translate" class="nav-item">🖱️</span>
     <span id="to-simulation" class="nav-item">📈</span>
-    <span id="to-logs" class="nav-item selected">📜</span>
+    <span id="to-logs" class="nav-item">📜</span>
   </nav>
 
   <div id="config">
     <div class="card">
       <h1>Config</h1>
-      <span>
+
+      <div id="config-params">
+        <label for="translate-server-protocol">Protocol:</label>
+        <input type="text" id="translate-server-protocol" value="ws://"></input>
+
         <label for="translate-server-address">Translator server address:</label>
         <input type="text" id="translate-server-address"></input>
-      </span>
+
+        <label for="translate-server-port">Port:</label>
+        <input type="text" id="translate-server-port" value="9999"></input>
+
+        <span id="translate-server-address-preview"></span>
+      </div>
 
       <button id="server-address-update">Update Server Address</button>
     </div>

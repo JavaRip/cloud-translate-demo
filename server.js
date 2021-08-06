@@ -36,7 +36,6 @@ async function getLogs(_, res) {
 }
 
 // api
-app.get('/translatorPort', (_, res) => res.json(config.translatorPort));
 app.post('/saveLogs', express.json(), (req, res) => { saveLogs(req, res); });
 app.get('/logs', (_, res) => { getLogs(_, res); });
 

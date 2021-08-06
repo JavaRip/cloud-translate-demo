@@ -162,15 +162,12 @@ async function loadLogs() {
   );
 }
 
-async function getTranslatorPort() {
-  const res = await fetch('/translatorPort');
-  return await res.json();
-}
-
-async function init() {
-  const translatorPort = await getTranslatorPort();
+function init() {
   loadLogs();
-  elements.translateServerAddr.value = `ws://${window.location.hostname}:${translatorPort}`;
+  elements.translateServerProtocol.value = 'ws';
+  elements.translateServerAddr.value = `${window.location.hostname}`;
+  elements.translateServerPort.value = '9999';
+  elements.translateServerPreview.textContent = `${elements.translateServerProtocol.value}://${elements.translateServerAddr.value}:${elements.translateServerPort.value}`;
   manualTranslator.init(languageCodes, elements.languageSelector, getWsAddr());
   addEventListeners();
 }
