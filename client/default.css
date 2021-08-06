@@ -174,10 +174,6 @@ nav {
   color: var(--main-fg-color);
 }
 
-#translate-server-address-current {
-  font-weight: bold;
-}
-
 #translate-server-address-preview,
 #translate-server-address-current {
   grid-column-start: 1;
