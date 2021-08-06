@@ -137,6 +137,7 @@ nav {
   align-items: center;
   justify-content: center;
   width: 100%;
+  overflow: auto;
 }
 
 #config > .card {
@@ -144,8 +145,6 @@ nav {
   flex-direction: column;
   justify-content: space-around;
   padding: 2em;
-  height: 25em;
-  max-height: 90%;
   width: 40em;
   max-width: 90%;
 }
@@ -170,7 +169,17 @@ nav {
   color: var(--main-fg-color);
 }
 
-#translate-server-address-preview {
+#translate-server-address-current::before {
+  content: 'Current translator address: ';
+  color: var(--main-fg-color);
+}
+
+#translate-server-address-current {
+  font-weight: bold;
+}
+
+#translate-server-address-preview,
+#translate-server-address-current {
   grid-column-start: 1;
   grid-column-end: 3;
   color: var(--blue);

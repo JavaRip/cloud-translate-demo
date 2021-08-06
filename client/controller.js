@@ -96,11 +96,18 @@ function resetSimulationButtons() {
   }
 }
 
+function updateWsAddrPreview() {
+  const protocol = elements.translateServerProtocol.value;
+  const hostname = elements.translateServerAddr.value;
+  const port = elements.translateServerPort.value;
+  const wsAddress =
+    (port === '') ? `${protocol}://${hostname}` : `${protocol}://${hostname}:${port}`;
+
+  elements.translateServerPreview.textContent = wsAddress;
+}
+
 function getWsAddr() {
-  elements.translateServerPreview.textContent = `
-    ${elements.translateServerProtocol.value}://${elements.translateServerAddr.value}:${elements.translateServerPort.value}
-  `;
-  return elements.translateServerPreview.textContent;
+  return elements.translateServerCurrent.textContent;
 }
 
 function addEventListeners() {
@@ -113,8 +120,13 @@ function addEventListeners() {
   });
 
   elements.serverAddressUpdate.addEventListener('click', () => {
+    elements.translateServerCurrent.textContent = elements.translateServerPreview.textContent;
     manualTranslator.updateWebSocket(getWsAddr());
   });
+
+  for (const element of elements.configParams.querySelectorAll('input')) {
+    element.addEventListener('change', updateWsAddrPreview);
+  }
 
   elements.startStressTest.addEventListener('click', () => {
     runStressTest();
@@ -155,14 +167,16 @@ function addEventListeners() {
 }
 
 function setTranslateServer() {
-  elements.translateServerProtocol.value = 'ws';
+  const protocol = 'ws';
+  const hostname = window.location.hostname;
+  const port = '9999';
+  const wsAddress = `${protocol}://${hostname}:${port}`;
+
+  elements.translateServerProtocol.value = protocol;
   elements.translateServerAddr.value = `${window.location.hostname}`;
   elements.translateServerPort.value = '9999';
-  elements.translateServerPreview.textContent = `
-    ${elements.translateServerProtocol.value}://
-    ${elements.translateServerAddr.value}:
-    ${elements.translateServerPort.value}
-  `;
+  elements.translateServerPreview.textContent = wsAddress;
+  elements.translateServerCurrent.textContent = wsAddress;
 }
 
 async function loadLogs() {
