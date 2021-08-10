@@ -1,25 +1,34 @@
 import { StatGenerator } from './statGenerator.js';
 
 export class Logger extends StatGenerator {
-  async saveLogs(logs) {
-    // save to local storage
+  init(logsEl, demoLog, clientLog, translationLog) {
+    this.logsEl = logsEl;
+    this.demoLog = demoLog;
+    this.clientLog = clientLog;
+    this.translationLog = translationLog;
+  }
 
-    if (true) return true;
+  saveLogs(logs) {
+    // save to local storage
+    console.log('save logs');
+    console.log(logs);
+
+    if (logs) return true;
     else console.error('Failed to send logs to server.');
   }
 
-  async getLogs() {
+  getLogs() {
     // load from local storage
 
-    return true;
+    return { hello: 'hello' };
   }
 
-  displayLogs(logs, logsEl, simulationLog, clientLog, translationLog) {
+  displayLogs() {
     // display logs
     // get log from local storage, only show one at a time (most recent simulation)
-    return true;
+    const logs = this.getLogs();
     for (const log of logs) {
-      const logRowTemplate = document.importNode(simulationLog.content, true);
+      const logRowTemplate = document.importNode(this.simulationLog.content, true);
       const logRow = logRowTemplate.querySelector('.simulationLogRow');
       const clientLogsEl = logRowTemplate.querySelector('.clientLogs');
 
@@ -41,7 +50,7 @@ export class Logger extends StatGenerator {
       logRow.querySelector('.averageResponseTime').textContent = avgResponseTime;
 
       for (const client of log.clients) {
-        const clientLogRowTemplate = document.importNode(clientLog.content, true);
+        const clientLogRowTemplate = document.importNode(this.clientLog.content, true);
         const clientLogRow = clientLogRowTemplate.querySelector('.clientLogRow');
         const requestLogsEl = clientLogRow.querySelector('.translationLogs');
 
@@ -53,7 +62,7 @@ export class Logger extends StatGenerator {
         clientLogRow.querySelector('.translationsReceived').textContent = translationsReceived;
 
         for (const request of client.translationsRequested) {
-          const translationLogTemplate = document.importNode(translationLog.content, true);
+          const translationLogTemplate = document.importNode(this.translationLog.content, true);
           const translationLogRow = translationLogTemplate.querySelector('.translationLogRow');
 
           const response = findResponse(request, client.translationsReceived);
@@ -73,7 +82,7 @@ export class Logger extends StatGenerator {
         }
         clientLogsEl.appendChild(clientLogRow);
       }
-      logsEl.appendChild(logRow);
+      this.logsEl.appendChild(logRow);
     }
 
     const dropDownSelectors = ['.clientLogsHeading', '.translationLogsHeading'];

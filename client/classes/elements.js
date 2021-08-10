@@ -3,7 +3,7 @@ export class Elements {
     this.wrapper = document.querySelector('#wrapper');
     this.textToTranslate = document.querySelector('#text-to-translate');
     this.translatedText = document.querySelector('#translated-text');
-    this.languageSelector = document.querySelector('#language-selector');
+    this.manualLanguageSelector = document.querySelector('#manual-language-selector');
     this.configParams = document.querySelector('#config-params');
     this.translateServerProtocol = document.querySelector('#translate-server-protocol');
     this.translateServerAddr = document.querySelector('#translate-server-address');
@@ -16,5 +16,9 @@ export class Elements {
     this.simulationLog = document.querySelector('#simulation-log');
     this.clientLog = document.querySelector('#client-log');
     this.translationLog = document.querySelector('#translation-log');
+    this.demoLanguageSelector = document.querySelector('#demo-language-selector');
+    this.sourceText = document.querySelector('#source-text');
+    this.translatedText = document.querySelector('#translated-text');
+    this.languageSelectors = document.querySelectorAll('.language-selector');
   }
 }

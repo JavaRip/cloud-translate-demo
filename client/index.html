@@ -9,11 +9,11 @@
 
 <body>
 
-<div id="wrapper" class="config">
+<div id="wrapper" class="auto-translate">
   <nav>
-    <span id="to-settings" class="nav-item selected">⚙️</span>
+    <span id="to-settings" class="nav-item">⚙️</span>
     <span id="to-manual-translate" class="nav-item">🖱️</span>
-    <span id="to-simulation" class="nav-item">📈</span>
+    <span id="to-simulation" class="nav-item selected">📈</span>
     <span id="to-logs" class="nav-item">📜</span>
   </nav>
 
@@ -47,13 +47,17 @@
 
       <label for="translated-text">Translated Text</label>
       <textarea id="translated-text" readonly></textarea>
-      <select name="language" id="language-selector"></select>
+      <select name="language" id="manual-language-selector" class="language-selector"></select>
     </div>
   </div>
 
   <div id="auto-translate">
-    <div class="card"></div>
-
+    <div class="card">
+      <select name="language" id="demo-language-selector" class="language-selector"></select>
+      <button id="start-translating">Start Demo</button>
+      <div id="source-text"></div>
+      <div id="tranlsated-text"></div>
+    </div>
   </div>
 
   <div id="logs"></div>

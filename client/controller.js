@@ -1,46 +1,28 @@
-import { Client } from './classes/client.js';
 import { ManualTranslator } from './classes/manualTranslator.js';
 import { Elements } from './classes/elements.js';
 import { Navi } from './classes/navigator.js';
 import { Logger } from './classes/logger.js';
+import { Demo } from './classes/demo.js';
 
 import { languages as languageCodes } from './data/languageCodes.js';
 import { textList } from './data/sampleTexts.js';
 
-let runningSimulation = false; // can be false or a simulation
 const elements = new Elements();
 const navigator = new Navi();
 const logger = new Logger();
+const demo = new Demo(textList, 500);
 const manualTranslator = new ManualTranslator(
   elements.textToTranslate,
   elements.translatedText,
-  elements.languageSelector,
+  elements.manualLanguageSelector,
 );
-
-function stopSimulation() {
-  runningSimulation.stop();
-  statDisplayer.stopRefreshing();
-  resetSimulationButtons();
-}
-
-function resetSimulationButtons() {
-  // when simulation has stopped hide stop buttons show start buttons
-  for (const button of elements.stopButtons) {
-    button.style.display = 'none';
-  }
-
-  for (const button of elements.startButtons) {
-    button.style.display = '';
-  }
-}
 
 function updateWsAddrPreview() {
   // config
   const protocol = elements.translateServerProtocol.value;
   const hostname = elements.translateServerAddr.value;
   const port = elements.translateServerPort.value;
-  const wsAddress =
-    (port === '') ? `${protocol}://${hostname}` : `${protocol}://${hostname}:${port}`;
+  const wsAddress = (port === '') ? `${protocol}://${hostname}` : `${protocol}://${hostname}:${port}`;
 
   elements.translateServerPreview.textContent = wsAddress;
 }
@@ -55,7 +37,7 @@ function addEventListeners() {
     manualTranslator.requestTranslation();
   });
 
-  elements.languageSelector.addEventListener('change', () => {
+  elements.manualLanguageSelector.addEventListener('change', () => {
     manualTranslator.requestTranslation();
   });
 
@@ -73,18 +55,16 @@ function addEventListeners() {
   elements.nav.addEventListener('click', (event) => {
     navigator.parse(event, elements);
   });
+}
 
-
-  // simulation
-  window.addEventListener('simulationStarted', (event) => {
-    runningSimulation = event.detail;
-  });
-
-  window.addEventListener('simulationStopped', (event) => {
-    runningSimulation = false;
-    resetSimulationButtons();
-    logger.saveLogs(event.detail);
-  });
+function initLanguageSelectors(languageSelector) {
+  // init language selector
+  for (const language of languageCodes) {
+    const optionEl = document.createElement('option');
+    optionEl.value = language.code;
+    optionEl.textContent = `${language.name} [${language.code}]`;
+    languageSelector.appendChild(optionEl);
+  }
 }
 
 function setTranslateServer() {
@@ -101,22 +81,11 @@ function setTranslateServer() {
   elements.translateServerCurrent.textContent = wsAddress;
 }
 
-async function loadLogs() {
-  // init load logs with elements to move this code into logger
-  const logs = await logger.getLogs();
-  logger.displayLogs(
-    logs,
-    elements.logs,
-    elements.simulationLog,
-    elements.clientLog,
-    elements.translationLog,
-  );
-}
-
 function init() {
-  loadLogs();
+  elements.languageSelectors.forEach(element => initLanguageSelectors(element));
+  logger.init(elements.logs, elements.simulationLog, elements.clientLog, elements.translationLog);
   setTranslateServer();
-  manualTranslator.init(languageCodes, elements.languageSelector, getWsAddr());
+  manualTranslator.init(getWsAddr());
   addEventListeners();
 }
 

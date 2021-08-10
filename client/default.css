@@ -1,5 +1,4 @@
-:root {
-  --main-bg-color: whitesmoke;
+:root { --main-bg-color: whitesmoke;
   --lighter-bg-color: white;
   --darker-bg-color: gainsboro;
   --main-fg-color: rgb(20, 20, 20);
@@ -119,6 +118,18 @@ nav {
   text-align: center;
 }
 
+#auto-translate > .card {
+  grid-template-areas:
+    "controls controls"
+    "sourceText translatedText"
+  ;
+}
+
+#auto-translate #demo-language-selector { grid-template-areas: controls; }
+#auto-translate #start-translating { grid-template-areas: controls; }
+#auto-translate #source-text { grid-template-areas: sourceText; }
+#auto-translate #translated-text { grid-template-areas: translatedText; }
+
 .nav-item.selected {
   background-color: var(--darker-bg-color);
 }
@@ -201,7 +212,7 @@ nav {
 #manual-translate > div > #translated-text              { grid-area: translationContent; }
 #manual-translate > div > label[for=translated-text]    { grid-area: translationLabel; }
 #manual-translate > div > label[for=language-selector]  { grid-area: translationLabel; }
-#manual-translate > div > #language-selector            { grid-area: languageSelector; }
+#manual-translate > div > .language-selector            { grid-area: languageSelector; }
 
 #manual-translate > div > textarea {
   overflow: auto;
