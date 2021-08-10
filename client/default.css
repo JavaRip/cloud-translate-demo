@@ -217,7 +217,7 @@ nav {
   overflow: auto;
 }
 
-.simulationLogRow {
+.simulation-log-row {
   display: grid;
   grid-template-areas:
     'startTime duration .'
@@ -236,46 +236,46 @@ nav {
 }
 
 /* simulation grid area placement & positioning */
-.simulationLogRow > .startTime { grid-area: startTime; }
-.simulationLogRow > .duration { grid-area: duration; }
-.simulationLogRow > .translatorAddress { grid-area: translatorAddress; }
-.simulationLogRow > .totalTranslationsRequested { grid-area: totalRequested; }
-.simulationLogRow > .totalTranslationsReceived { grid-area: totalReceived; }
-.simulationLogRow > .averageResponseTime { grid-area: avgResponseTime; }
-.simulationLogRow > .clientLogsHeading { grid-area: clientLogsHeading; }
-.simulationLogRow > .clientLogs { grid-area: clientLogs; }
+.simulation-log-row > .start-time { grid-area: startTime; }
+.simulation-log-row > .duration { grid-area: duration; }
+.simulation-log-row > .translator-address { grid-area: translatorAddress; }
+.simulation-log-row > .total-translations-requested { grid-area: totalRequested; }
+.simulation-log-row > .total-translations-received { grid-area: totalReceived; }
+.simulation-log-row > .average-response-time { grid-area: avgResponseTime; }
+.simulation-log-row > .client-logs-heading { grid-area: clientLogsHeading; }
+.simulation-log-row > .client-logs { grid-area: clientLogs; }
 
 /* simulation pseudo classes for labels */
-.simulationLogRow > .translatorAddress::before { content: 'Translator address: '; }
-.simulationLogRow > .duration::before { content: 'Duration: '; }
-.simulationLogRow > .duration::after { content: ' (Seconds)'; }
-.simulationLogRow > .totalTranslationsRequested::before { content: 'Translations Requested: '; }
-.simulationLogRow > .totalTranslationsReceived::before { content: 'Translations Received: '; }
-.simulationLogRow > .averageResponseTime::before { content: 'Average Response Time: '; }
+.simulation-log-row > .translator-address::before { content: 'Translator address: '; }
+.simulation-log-row > .duration::before { content: 'Duration: '; }
+.simulation-log-row > .duration::after { content: ' (Seconds)'; }
+.simulation-log-row > .total-translations-requested::before { content: 'Translations Requested: '; }
+.simulation-log-row > .total-translations-received::before { content: 'Translations Received: '; }
+.simulation-log-row > .average-response-time::before { content: 'Average Response Time: '; }
 
-.clientLogsHeading {
+.client-logs-heading {
   font-weight: bold;
   font-size: 1.4rem;
   cursor: pointer;
 }
 
-.clientLogsHeading::after {
+.client-logs-heading::after {
   content: ' ˇ';
   top: 0.5em;
   position: relative;
 }
 
-.clientLogsHeading.selected::after {
+.client-logs-heading.selected::after {
   content: ' ^';
 }
 
 /* styling to expand & collapse client logs */
-.simulationLogRow > .clientLogs {
+.simulation-log-row > .client-logs {
   max-height: 0;
   overflow: hidden;
 }
 
-.simulationLogRow > .clientLogsHeading.selected ~ .clientLogs {
+.simulation-log-row > .client-logs-heading.selected ~ .client-logs {
   max-height: 1000rem;
   animation: expand 1s forwards;
 }
@@ -288,33 +288,33 @@ nav {
 
 /* client grid area placement & positioning */
 
-.clientLogs {
+.client-logs {
   display: flex;
   flex-direction: column;
 }
 
-.clientLogRow:first-of-type {
+.client-log-row:first-of-type {
   font-weight: bold;
 }
 
-.clientLogRow {
+.client-log-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: auto auto;
 }
 
-.translationLogsHeading::after {
+.translation-logs-heading::after {
   content: ' ˇ';
   top: 0.5em;
   position: relative;
 }
 
-.translationLogsHeading.selected::after {
+.translation-logs-heading.selected::after {
   content: ' ^';
 }
 
-.clientLogRow.selected::after,
-.clientLogRow::after {
+.client-log-row.selected::after,
+.client-log-row::after {
   top: 0.6em;
   position: relative;
   line-height: 0.7em;
@@ -323,7 +323,7 @@ nav {
 
 /* Translation logs */
 
-.translationLogs {
+.translation-logs {
   /* child properties */
   overflow: hidden;
   grid-column-start: 1;
@@ -338,14 +338,14 @@ nav {
   width: calc(80% + 5em);
 }
 
-.translationLogsHeading.selected ~ .translationLogs {
+.translation-logs-heading.selected ~ .translation-logs {
   height: auto;
   margin: 2em auto;
   border-top: 0.1em solid var(--main-fg-color);
   border-bottom: 0.1em solid var(--main-fg-color);
 }
 
-.translationLogRow {
+.translation-log-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   margin: 0.8em 0;
@@ -353,11 +353,11 @@ nav {
   border-bottom: 0.1rem dashed var(--main-fg-color);
 }
 
-.noTranslation {
+.no-translation {
   color: var(--red);
   font-style: italic;
 }
 
-.translationLogRow:first-of-type {
+.translation-log-row:first-of-type {
   font-weight: bold;
 }
