@@ -18,7 +18,8 @@ export class Config {
     this.currentAddressEl.value = wsAddress;
   }
 
-  initLanguageSelectors(languageSelectors, languageCodes) {
+  init(languageSelectors, languageCodes, elements, manualTranslator) {
+    // init language selectors
     for (const languageSelector of languageSelectors) {
       for (const language of languageCodes) {
         const optionEl = document.createElement('option');
@@ -27,10 +28,19 @@ export class Config {
         languageSelector.appendChild(optionEl);
       }
     }
+
+    // init event listeners
+    elements.serverAddressUpdate.addEventListener('click', () => {
+      elements.translateServerCurrent.textContent = elements.translateServerPreview.textContent;
+      manualTranslator.updateWebSocket(this.getWsAddr());
+    });
+
+    for (const element of elements.configParams.querySelectorAll('input')) {
+      element.addEventListener('change', this.updateWsAddrPreview);
+    }
   }
 
   updateWsAddrPreview() {
-    // config
     const protocol = this.protocolEl.value;
     const hostname = this.addressEl.value;
     const port = this.portEl.value;

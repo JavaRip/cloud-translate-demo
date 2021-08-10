@@ -1,5 +1,11 @@
 // Short for Navigator, which is a reserved word in JavaScript
 export class Navi {
+  init(elements) {
+    elements.nav.addEventListener('click', (event) => {
+      this.parse(event, elements);
+    });
+  }
+
   parse(event, elements) {
     switch (event.target.id) {
       case 'to-settings':

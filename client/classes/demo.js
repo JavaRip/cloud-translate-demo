@@ -8,9 +8,10 @@ export class Demo {
     this.boundRequestTranslation = null; // required for setInterval https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval#the_this_problem
   }
 
-  init(translatorWebsocket, targetLanguage) {
+  init(translatorWebsocket) {
     this.translatorWebsocket = translatorWebsocket;
     this.targetLanguage = targetLanguage;
+
     this.ws = new WebSocket(this.translatorWebsocket);
     this.ws.addEventListener('open', () => { this.openWebsocket(); });
     this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });

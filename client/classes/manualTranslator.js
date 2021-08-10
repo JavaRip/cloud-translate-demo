@@ -6,6 +6,15 @@ export class ManualTranslator {
   }
 
   init(webSocketAddress) {
+    // init event listeners
+    this.textSource.addEventListener('keyup', () => {
+      this.requestTranslation();
+    });
+
+    this.targetSelector.manualLanguageSelector.addEventListener('change', () => {
+      this.requestTranslation();
+    });
+
     // init websocket address
     this.ws = new WebSocket(webSocketAddress);
     this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
