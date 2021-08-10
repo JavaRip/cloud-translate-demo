@@ -2,24 +2,22 @@ import { StatGenerator } from './statGenerator.js';
 
 export class Logger extends StatGenerator {
   async saveLogs(logs) {
-    const response = await fetch('/saveLogs', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ logs: logs }),
-    });
+    // save to local storage
 
-    if (response.ok) return true;
+    if (true) return true;
     else console.error('Failed to send logs to server.');
   }
 
   async getLogs() {
-    const response = await fetch('/logs');
+    // load from local storage
+
     if (response.ok) return await response.json(response);
     else console.error('Failed to get logs from server');
   }
 
   displayLogs(logs, logsEl, simulationLog, clientLog, translationLog) {
     // display logs
+    // get log from local storage, only show one at a time (most recent simulation)
     for (const log of logs) {
       const logRowTemplate = document.importNode(simulationLog.content, true);
       const logRow = logRowTemplate.querySelector('.simulationLogRow');
