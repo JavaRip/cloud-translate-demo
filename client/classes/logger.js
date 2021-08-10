@@ -11,13 +11,13 @@ export class Logger extends StatGenerator {
   async getLogs() {
     // load from local storage
 
-    if (response.ok) return await response.json(response);
-    else console.error('Failed to get logs from server');
+    return true;
   }
 
   displayLogs(logs, logsEl, simulationLog, clientLog, translationLog) {
     // display logs
     // get log from local storage, only show one at a time (most recent simulation)
+    return true;
     for (const log of logs) {
       const logRowTemplate = document.importNode(simulationLog.content, true);
       const logRow = logRowTemplate.querySelector('.simulationLogRow');

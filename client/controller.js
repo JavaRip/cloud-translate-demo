@@ -17,17 +17,6 @@ const manualTranslator = new ManualTranslator(
   elements.languageSelector,
 );
 
-function setSimulationButtons() {
-  for (const button of elements.stopButtons) {
-    button.addEventListener('click', stopSimulation);
-    button.style.display = '';
-  }
-
-  for (const button of elements.startButtons) {
-    button.style.display = 'none';
-  }
-}
-
 function stopSimulation() {
   runningSimulation.stop();
   statDisplayer.stopRefreshing();
@@ -113,6 +102,7 @@ function setTranslateServer() {
 }
 
 async function loadLogs() {
+  // init load logs with elements to move this code into logger
   const logs = await logger.getLogs();
   logger.displayLogs(
     logs,
