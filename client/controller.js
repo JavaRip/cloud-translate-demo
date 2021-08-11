@@ -21,7 +21,7 @@ const manualTranslator = new ManualTranslator(
 
 function init() {
   logger.init(elements.logs, elements.simulationLog, elements.clientLog, elements.translationLog);
-  config.setTranslateServer();
+  demo.init();
   config.init(elements.languageSelectors, languageCodes, elements, manualTranslator);
   manualTranslator.init(config.getWsAddr());
 }

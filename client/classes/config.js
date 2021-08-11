@@ -7,17 +7,6 @@ export class Config {
     this.currentAddressEl = elements.translateServerCurrent;
   }
 
-  setTranslateServer() {
-    this.protocolEl.value = 'ws';
-    this.addressEl.value = `${window.location.hostname}`;
-    this.portEl.value = '9999';
-
-    const wsAddress = `${this.protocolEl.value}://${this.addressEl.value}:${this.portEl.value}`;
-
-    this.previewEl.value = wsAddress;
-    this.currentAddressEl.value = wsAddress;
-  }
-
   init(languageSelectors, languageCodes, elements, manualTranslator) {
     // init language selectors
     for (const languageSelector of languageSelectors) {
@@ -38,6 +27,20 @@ export class Config {
     for (const element of elements.configParams.querySelectorAll('input')) {
       element.addEventListener('change', this.updateWsAddrPreview);
     }
+
+    // init translate server view
+    this.setTranslateServer();
+  }
+
+  setTranslateServer() {
+    this.protocolEl.value = 'ws';
+    this.addressEl.value = `${window.location.hostname}`;
+    this.portEl.value = '9999';
+
+    const wsAddress = `${this.protocolEl.value}://${this.addressEl.value}:${this.portEl.value}`;
+
+    this.previewEl.value = wsAddress;
+    this.currentAddressEl.value = wsAddress;
   }
 
   updateWsAddrPreview() {
