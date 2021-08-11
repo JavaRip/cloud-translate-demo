@@ -119,34 +119,52 @@ nav {
 }
 
 #auto-translate > .card {
-  grid-template-areas:
-    "controls controls"
-    "sourceText translatedText"
-  ;
+  display: grid;
+  grid-template-rows: auto auto;
+  margin: 2rem auto;
+  padding: 2em 3em;
 }
 
-#auto-translate #demo-language-selector { grid-template-areas: controls; }
-#auto-translate #start-translating { grid-template-areas: controls; }
-#auto-translate #source-text { grid-template-areas: sourceText; }
-#auto-translate #translated-text { grid-template-areas: translatedText; }
+#demo-language-selector {
+  width: 15em;
+}
+
+#start-translating {
+  width: 6em;
+}
 
 #demo-translations {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1em 1fr;
+  row-gap: 0.5em;
+  column-gap: 2em;
+  margin: 2rem 0;
+  max-width: 80vw;
+  width: 80em;
 }
 
-.awaiting-translation {
-  border: solid 3px red;
+.translation-indicator {
+  border-radius: 100%;
+  height: 1em;
+  width: 1em;
+  margin: auto;
 }
 
-.pending-translation {
-  border: solid 3px orange;
-  transition: border 300ms;
+.awaiting-translation + .translation-indicator {
+  background-color: cornflowerblue;
+  color: cornflowerblue;
 }
 
-.translation-received {
-  border: solid 3px green;
-  transition: border 600ms;
+.pending-translation + .translation-indicator{
+  background-color: red;
+  color: red;
+  transition: background-color 300ms, color 300ms;
+}
+
+.translation-received + .translation-indicator {
+  background-color: green;
+  color: green;
+  transition: background-color 300ms, color 300ms;
 }
 
 .nav-item.selected {

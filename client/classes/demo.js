@@ -14,9 +14,10 @@ export class Demo {
     this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
 
     for (const text of this.sourceText) {
-      // put text into source text sourceTextDiv
+      // create template in html instead of creating divs in javascript
       const sourceTextDiv = document.createElement('div');
       const translationPlaceholder = document.createElement('div');
+      const translationIndicator = document.createElement('div');
 
       sourceTextDiv.classList.add('source-item');
       sourceTextDiv.classList.add('awaiting-translation');
@@ -24,16 +25,18 @@ export class Demo {
 
       translationPlaceholder.classList.add('translation');
 
+      translationIndicator.classList.add('translation-indicator');
+
       this.translationsEl.appendChild(sourceTextDiv);
+      this.translationsEl.appendChild(translationIndicator);
       this.translationsEl.appendChild(translationPlaceholder);
     }
 
-    this.startButton.addEventListener('click', this.start);
+    this.startButton.addEventListener('click', () => { this.start(this.self); });
   }
 
-  start() {
-    // send translations (one every 500ms or so)
-    this.interval = window.setInterval(this.requestTranslation, 1500, this.self);
+  start(self) {
+    self.interval = window.setInterval(self.requestTranslation, 1500, self);
   }
 
   requestTranslation(self) {
@@ -65,7 +68,7 @@ export class Demo {
     originalRequestEl.classList.remove('pending-translation');
     originalRequestEl.classList.add('translation-received');
 
-    const translationEl = originalRequestEl.nextElementSibling;
+    const translationEl = originalRequestEl.nextElementSibling.nextElementSibling;
     translationEl.textContent = translation.translation;
   }
 
