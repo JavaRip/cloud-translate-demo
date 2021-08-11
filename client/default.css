@@ -130,6 +130,20 @@ nav {
 #auto-translate #source-text { grid-template-areas: sourceText; }
 #auto-translate #translated-text { grid-template-areas: translatedText; }
 
+.awaiting-translation {
+  border: solid 3px red;
+}
+
+.pending-translation {
+  border: solid 3px orange;
+  transition: border 300ms;
+}
+
+.translation-received {
+  border: solid 3px green;
+  transition: border 600ms;
+}
+
 .nav-item.selected {
   background-color: var(--darker-bg-color);
 }
