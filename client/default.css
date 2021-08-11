@@ -130,6 +130,11 @@ nav {
 #auto-translate #source-text { grid-template-areas: sourceText; }
 #auto-translate #translated-text { grid-template-areas: translatedText; }
 
+#demo-translations {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
 .awaiting-translation {
   border: solid 3px red;
 }

@@ -5,11 +5,16 @@ export class Config {
     this.portEl = elements.translateServerPort;
     this.previewEl = elements.translateServerPreview;
     this.currentAddressEl = elements.translateServerCurrent;
+    this.languageSelectors = elements.languageSelectors;
+    this.serverAddressUpdate = elements.serverAddressUpdate;
+    this.translateServerCurrent = elements.translateServerCurrent;
+    this.translateServerPreview = elements.translateServerPreview;
+    this.configParams = elements.configParams;
   }
 
-  init(languageCodes, elements, manualTranslator) {
+  init(languageCodes, manualTranslator) {
     // init language selectors
-    for (const languageSelector of elements.languageSelectors) {
+    for (const languageSelector of this.languageSelectors) {
       for (const language of languageCodes) {
         const optionEl = document.createElement('option');
         optionEl.value = language.code;
@@ -19,12 +24,12 @@ export class Config {
     }
 
     // init event listeners
-    elements.serverAddressUpdate.addEventListener('click', () => {
-      elements.translateServerCurrent.textContent = elements.translateServerPreview.textContent;
+    this.serverAddressUpdate.addEventListener('click', () => {
+      this.translateServerCurrent.textContent = this.translateServerPreview.textContent;
       manualTranslator.updateWebSocket(this.getWsAddr());
     });
 
-    for (const element of elements.configParams.querySelectorAll('input')) {
+    for (const element of this.configParams.querySelectorAll('input')) {
       element.addEventListener('change', this.updateWsAddrPreview);
     }
 

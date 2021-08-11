@@ -1,53 +1,81 @@
 export class Demo {
-  constructor(textArray, textRate) {
-    this.textArray = textArray; // lines of text to send to translator
-    this.translationsRequested = [];
-    this.translationsReceived = [];
-    this.intervalId = null;
-    this.intervalTime = textRate;
-    this.boundRequestTranslation = null; // required for setInterval https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setInterval#the_this_problem
+  constructor(textList, translationsEl, languageSelector, startButton) {
+    this.interval = null;
+    this.ws = null;
+    this.sourceText = textList;
+    this.translationsEl = translationsEl;
+    this.languageSelector = languageSelector;
+    this.startButton = startButton;
+    this.self = this;
   }
 
-  init(translatorWebsocket, targetLanguage) {
-    this.translatorWebsocket = translatorWebsocket;
-    this.targetLanguage = targetLanguage;
-
-    this.ws = new WebSocket(this.translatorWebsocket);
-    this.ws.addEventListener('open', () => { this.openWebsocket(); });
+  init(websocketAddr) {
+    this.ws = new WebSocket(websocketAddr);
     this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
-    this.boundRequestTranslation = this.requestTranslation.bind(this);
+
+    for (const text of this.sourceText) {
+      // put text into source text sourceTextDiv
+      const sourceTextDiv = document.createElement('div');
+      const translationPlaceholder = document.createElement('div');
+
+      sourceTextDiv.classList.add('source-item');
+      sourceTextDiv.classList.add('awaiting-translation');
+      sourceTextDiv.textContent = text;
+
+      translationPlaceholder.classList.add('translation');
+
+      this.translationsEl.appendChild(sourceTextDiv);
+      this.translationsEl.appendChild(translationPlaceholder);
+    }
+
+    this.startButton.addEventListener('click', this.start);
   }
 
-  stop() {
-    // stop requesting translations
-    window.clearInterval(this.intervalId);
-
-    // close websocket 1 second after requests have stopped to wait for responses
-    setTimeout(this.ws.close(), 1000);
+  start() {
+    // send translations (one every 500ms or so)
+    this.interval = window.setInterval(this.requestTranslation, 1500, this.self);
   }
 
-  openWebsocket() {
-    this.intervalId = setInterval(this.boundRequestTranslation, this.intervalTime);
-  }
+  requestTranslation(self) {
+    const requestEl = self.translationsEl.querySelector('.awaiting-translation');
 
-  requestTranslation() {
-    const translationRequest = {
-      text: this.textArray[0],
-      target: this.targetLanguage,
-      reqTimeStamp: String(Date.now()),
-    };
+    if (!requestEl) {
+      window.clearInterval(self.interval);
+      self.ws.close();
+      return;
+    }
 
-    this.ws.send(JSON.stringify(translationRequest));
-    this.translationsRequested.push(translationRequest);
+    requestEl.classList.remove('awaiting-translation');
+    requestEl.classList.add('pending-translation');
 
-    // rotate text array so next message is sent next
-    const buffer = this.textArray.pop();
-    this.textArray.unshift(buffer);
+    const request = JSON.stringify({
+      requestSent: Date.now(),
+      text: requestEl.textContent,
+      target: self.languageSelector.value,
+    });
+
+    requestEl.dataset.requestJson = request;
+    self.ws.send(request);
   }
 
   receiveTranslation(event) {
-    const res = JSON.parse(event.data);
-    res.resTime = Number(Date.now()) - new Date(Number(res.request.reqTimeStamp));
-    this.translationsReceived.push(res);
+    const translation = JSON.parse(event.data);
+    const originalRequestEl = this.getOriginalRequestEl(translation);
+
+    originalRequestEl.classList.remove('pending-translation');
+    originalRequestEl.classList.add('translation-received');
+
+    const translationEl = originalRequestEl.nextElementSibling;
+    translationEl.textContent = translation.translation;
+  }
+
+  getOriginalRequestEl(translation) {
+    for (const item of this.translationsEl.querySelectorAll('.source-item')) {
+      if (item.dataset.requestJson === JSON.stringify(translation.request)) {
+        return item;
+      }
+    }
+
+    return false;
   }
 }

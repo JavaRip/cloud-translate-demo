@@ -1,7 +1,8 @@
 import { StatGenerator } from './statGenerator.js';
 
 export class Logger extends StatGenerator {
-  init(logsEl, demoLog, clientLog, translationLog) {
+  constructor(logsEl, demoLog, clientLog, translationLog) {
+    super();
     this.logsEl = logsEl;
     this.demoLog = demoLog;
     this.clientLog = clientLog;
