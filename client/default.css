@@ -158,7 +158,7 @@ nav {
 .pending-translation + .translation-indicator{
   background-color: red;
   color: red;
-  transition: background-color 300ms, color 300ms;
+  transition: background-color 300ms 300ms, color 300ms 300ms;
 }
 
 .translation-received + .translation-indicator {
