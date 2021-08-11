@@ -7,9 +7,9 @@ export class Config {
     this.currentAddressEl = elements.translateServerCurrent;
   }
 
-  init(languageSelectors, languageCodes, elements, manualTranslator) {
+  init(languageCodes, elements, manualTranslator) {
     // init language selectors
-    for (const languageSelector of languageSelectors) {
+    for (const languageSelector of elements.languageSelectors) {
       for (const language of languageCodes) {
         const optionEl = document.createElement('option');
         optionEl.value = language.code;

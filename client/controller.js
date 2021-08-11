@@ -12,17 +12,22 @@ const elements = new Elements();
 const config = new Config(elements);
 new Navi(elements).init(elements);
 const logger = new Logger();
-const demo = new Demo(textList, 500);
+const demo = new Demo(textList, 500, elements.sourceText, elements.demoTranslatedText);
 const manualTranslator = new ManualTranslator(
   elements.textToTranslate,
   elements.translatedText,
   elements.manualLanguageSelector,
 );
 
+for (const text of textList) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  elements.sourceText.appendChild(div);
+}
+
 function init() {
   logger.init(elements.logs, elements.simulationLog, elements.clientLog, elements.translationLog);
-  demo.init();
-  config.init(elements.languageSelectors, languageCodes, elements, manualTranslator);
+  config.init(languageCodes, elements, manualTranslator);
   manualTranslator.init(config.getWsAddr());
 }
 

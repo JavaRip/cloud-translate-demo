@@ -11,7 +11,7 @@ export class ManualTranslator {
       this.requestTranslation();
     });
 
-    this.targetSelector.manualLanguageSelector.addEventListener('change', () => {
+    this.targetSelector.addEventListener('change', () => {
       this.requestTranslation();
     });
 
