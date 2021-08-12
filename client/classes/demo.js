@@ -7,6 +7,8 @@ export class Demo {
     this.translationTemplate = translationTemplate;
     this.languageSelector = languageSelector;
     this.startButton = startButton;
+
+    // self used for async functions where 'this' will have changed
     this.self = this;
   }
 
@@ -17,7 +19,7 @@ export class Demo {
     for (const text of this.sourceText) {
       // create template in html instead of creating divs in javascript
       const translationTemplate = document.importNode(this.translationTemplate.content, true);
-      
+
       const sourceTextDiv = translationTemplate.querySelector('.source-item');
       const translationIndicator = translationTemplate.querySelector('.translation-indicator');
       const translationPlaceholder = translationTemplate.querySelector('.translation');
