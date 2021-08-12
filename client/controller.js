@@ -23,6 +23,7 @@ const demo = new Demo(
   els.demoTranslations,
   els.demoLanguageSelector,
   els.startDemo,
+  els.demoTranslation,
 );
 
 const manualTranslator = new ManualTranslator(

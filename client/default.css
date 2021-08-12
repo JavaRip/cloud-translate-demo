@@ -155,15 +155,13 @@ nav {
   color: cornflowerblue;
 }
 
-.pending-translation + .translation-indicator{
+.pending-translation + .translation-indicator {
   background-color: red;
-  color: red;
   transition: background-color 300ms 300ms, color 300ms 300ms;
 }
 
 .translation-received + .translation-indicator {
-  background-color: green;
-  color: green;
+  background-color: limegreen;
   transition: background-color 300ms, color 300ms;
 }
 

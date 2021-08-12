@@ -1,9 +1,10 @@
 export class Demo {
-  constructor(textList, translationsEl, languageSelector, startButton) {
+  constructor(textList, translationsEl, languageSelector, startButton, translationTemplate) {
     this.interval = null;
     this.ws = null;
     this.sourceText = textList;
     this.translationsEl = translationsEl;
+    this.translationTemplate = translationTemplate;
     this.languageSelector = languageSelector;
     this.startButton = startButton;
     this.self = this;
@@ -15,17 +16,13 @@ export class Demo {
 
     for (const text of this.sourceText) {
       // create template in html instead of creating divs in javascript
-      const sourceTextDiv = document.createElement('div');
-      const translationPlaceholder = document.createElement('div');
-      const translationIndicator = document.createElement('div');
+      const translationTemplate = document.importNode(this.translationTemplate.content, true);
+      
+      const sourceTextDiv = translationTemplate.querySelector('.source-item');
+      const translationIndicator = translationTemplate.querySelector('.translation-indicator');
+      const translationPlaceholder = translationTemplate.querySelector('.translation');
 
-      sourceTextDiv.classList.add('source-item');
-      sourceTextDiv.classList.add('awaiting-translation');
       sourceTextDiv.textContent = text;
-
-      translationPlaceholder.classList.add('translation');
-
-      translationIndicator.classList.add('translation-indicator');
 
       this.translationsEl.appendChild(sourceTextDiv);
       this.translationsEl.appendChild(translationIndicator);
