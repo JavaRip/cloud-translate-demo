@@ -22,7 +22,7 @@ export class Elements {
     this.languageSelectors = document.querySelectorAll('.language-selector');
     this.startDemo = document.querySelector('#start-demo');
     this.stopDemo = document.querySelector('#stop-demo');
-    this.resetDemo= document.querySelector('#reset-demo');
+    this.resetDemo = document.querySelector('#reset-demo');
     this.demoTranslation = document.querySelector('#demo-translation');
   }
 }

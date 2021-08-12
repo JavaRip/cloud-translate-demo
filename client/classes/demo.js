@@ -15,8 +15,8 @@ export class Demo {
   }
 
   init(websocketAddr) {
-    this.ws = new WebSocket(websocketAddr);
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
+    this.wsAddr = websocketAddr;
+    this.initWs(this.self);
 
     for (const text of this.sourceText) {
       // create template in html instead of creating divs in javascript
@@ -38,9 +38,14 @@ export class Demo {
     this.resetButton.addEventListener('click', () => { this.reset(this.self); });
   }
 
+  initWs(self) {
+    self.ws = new WebSocket(this.wsAddr);
+    self.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
+  }
+
   start(self) {
-    this.startButton.style.display = 'none';
-    this.stopButton.style.display = '';
+    self.startButton.style.display = 'none';
+    self.stopButton.style.display = '';
     self.interval = window.setInterval(self.requestTranslation, 1500, self);
   }
 
@@ -58,6 +63,7 @@ export class Demo {
   }
 
   reset(self) {
+    self.initWs(self);
     self.resetCurrentTranslation(self);
     self.resetButton.style.display = 'none';
     self.startButton.style.display = '';
