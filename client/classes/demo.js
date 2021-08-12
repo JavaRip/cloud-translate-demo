@@ -40,7 +40,9 @@ export class Demo {
 
   initWs(self) {
     self.ws = new WebSocket(this.wsAddr);
-    self.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
+    self.ws.addEventListener('message', (event) => {
+      this.receiveTranslation(event, this.self);
+    });
   }
 
   start(self) {
@@ -110,9 +112,9 @@ export class Demo {
     );
   }
 
-  receiveTranslation(event) {
+  receiveTranslation(event, self) {
     const translation = JSON.parse(event.data);
-    const originalRequestEl = this.getOriginalRequestEl(translation);
+    const originalRequestEl = self.getOriginalRequestEl(translation, self);
 
     originalRequestEl.classList.remove('pending-translation');
     originalRequestEl.classList.add('translation-received');
@@ -121,8 +123,8 @@ export class Demo {
     translationEl.textContent = translation.translation;
   }
 
-  getOriginalRequestEl(translation) {
-    for (const item of this.translationsEl.querySelectorAll('.source-item')) {
+  getOriginalRequestEl(translation, self) {
+    for (const item of self.translationsEl.querySelectorAll('.source-item')) {
       if (item.dataset.requestJson === JSON.stringify(translation.request)) {
         return item;
       }
