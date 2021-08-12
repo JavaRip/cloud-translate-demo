@@ -119,14 +119,16 @@ nav {
   text-align: center;
 }
 
+#auto-translate {
+  display: flex;
+  overflow: auto;
+}
+
 #auto-translate > .card {
   display: grid;
   grid-template-rows: auto auto;
   margin: 2rem auto;
   padding: 2em 3em;
-  max-height: 90%;
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 #demo-language-selector {
@@ -171,6 +173,10 @@ nav {
 .source-item,
 .translation {
   padding: 1em 0.2em;
+}
+
+.current-translation {
+  color: blue;
 }
 
 .awaiting-translation + .translation-indicator::after {

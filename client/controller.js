@@ -18,13 +18,7 @@ new Navi(els).init(els);
 //   els.translationLog,
 // );
 
-const demo = new Demo(
-  textList,
-  els.demoTranslations,
-  els.demoLanguageSelector,
-  els.startDemo,
-  els.demoTranslation,
-);
+const demo = new Demo(textList, els);
 
 const manualTranslator = new ManualTranslator(
   els.textToTranslate,
