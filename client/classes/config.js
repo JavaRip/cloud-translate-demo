@@ -31,7 +31,6 @@ export class Config {
     this.serverAddressUpdate.addEventListener('click', () => { this.updateWsAddrCurrent(this, manualTranslator); });
 
     for (const element of this.configParams.querySelectorAll('input')) {
-      console.log('cahgne');
       element.addEventListener('change', () => { this.updateWsAddrPreview(this); });
     }
   }
@@ -44,7 +43,6 @@ export class Config {
     const wsAddress = `${this.protocolEl.value}://${this.addressEl.value}:${this.portEl.value}`;
 
     this.previewEl.value = wsAddress;
-    console.log(this.currentAddressEl);
     this.currentAddressEl.textContent = wsAddress;
   }
 
