@@ -39,10 +39,14 @@ export class Demo {
   }
 
   initWs(self) {
-    self.ws = new WebSocket(this.wsAddr);
-    self.ws.addEventListener('message', (event) => {
-      this.receiveTranslation(event, this.self);
-    });
+    try {
+      self.ws = new WebSocket(self.wsAddr);
+      self.ws.addEventListener('message', (event) => {
+        self.receiveTranslation(event, self);
+      });
+    } catch {
+      console.error(`invalid web socket ${self.wsAddr}`);
+    }
   }
 
   start(self) {

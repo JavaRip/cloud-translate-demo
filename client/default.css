@@ -182,6 +182,7 @@ nav {
 .awaiting-translation + .translation-indicator::after {
   background-color: cornflowerblue;
   color: cornflowerblue;
+  transition: background-color 300ms 300ms, color 300ms 300ms;
 }
 
 .pending-translation + .translation-indicator::after {

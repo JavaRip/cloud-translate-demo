@@ -16,13 +16,16 @@ export class ManualTranslator {
     });
 
     // init websocket address
-    this.ws = new WebSocket(webSocketAddress);
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
+    this.updateWebSocket(webSocketAddress);
   }
 
   updateWebSocket(webSocketAddress) {
-    this.ws = new WebSocket(webSocketAddress);
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
+    try {
+      this.ws = new WebSocket(webSocketAddress);
+      this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
+    } catch {
+      console.error(`invalid websocket address ${webSocketAddress}`);
+    }
   }
 
   requestTranslation() {
