@@ -23,18 +23,17 @@ export class Config {
       }
     }
 
-    // init event listeners
-    this.serverAddressUpdate.addEventListener('click', () => {
-      this.translateServerCurrent.textContent = this.translateServerPreview.textContent;
-      manualTranslator.updateWebSocket(this.getWsAddr());
-    });
-
-    for (const element of this.configParams.querySelectorAll('input')) {
-      element.addEventListener('change', this.updateWsAddrPreview);
-    }
-
     // init translate server view
     this.setTranslateServer();
+    this.updateWsAddrPreview(this);
+
+    // init event listeners
+    this.serverAddressUpdate.addEventListener('click', () => { this.updateWsAddrCurrent(this, manualTranslator); });
+
+    for (const element of this.configParams.querySelectorAll('input')) {
+      console.log('cahgne');
+      element.addEventListener('change', () => { this.updateWsAddrPreview(this); });
+    }
   }
 
   setTranslateServer() {
@@ -45,22 +44,27 @@ export class Config {
     const wsAddress = `${this.protocolEl.value}://${this.addressEl.value}:${this.portEl.value}`;
 
     this.previewEl.value = wsAddress;
-    this.currentAddressEl.value = wsAddress;
+    console.log(this.currentAddressEl);
+    this.currentAddressEl.textContent = wsAddress;
   }
 
-  updateWsAddrPreview() {
-    const protocol = this.protocolEl.value;
-    const hostname = this.addressEl.value;
-    const port = this.portEl.value;
+  updateWsAddrPreview(self) {
+    const protocol = self.protocolEl.value;
+    const hostname = self.addressEl.value;
+    const port = self.portEl.value;
     const wsAddress = (port === '')
       ? `${protocol}://${hostname}`
       : `${protocol}://${hostname}:${port}`;
 
-    this.previewEl.textContent = wsAddress;
+    self.previewEl.textContent = wsAddress;
   }
 
+  updateWsAddrCurrent(self, manualTranslator) {
+    self.translateServerCurrent.textContent = self.translateServerPreview.textContent;
+    manualTranslator.updateWebSocket(self.getWsAddr());
+  }
 
   getWsAddr() {
-    return this.currentAddressEl.value;
+    return this.currentAddressEl.textContent;
   }
 }
