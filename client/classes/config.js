@@ -12,7 +12,7 @@ export class Config {
     this.configParams = elements.configParams;
   }
 
-  init(languageCodes, manualTranslator) {
+  init(languageCodes, manualTranslator, demo) {
     // init language selectors
     for (const languageSelector of this.languageSelectors) {
       for (const language of languageCodes) {
@@ -28,7 +28,9 @@ export class Config {
     this.updateWsAddrPreview(this);
 
     // init event listeners
-    this.serverAddressUpdate.addEventListener('click', () => { this.updateWsAddrCurrent(this, manualTranslator); });
+    this.serverAddressUpdate.addEventListener('click', () => {
+      this.updateWsAddrCurrent(this, manualTranslator, demo);
+    });
 
     for (const element of this.configParams.querySelectorAll('input')) {
       element.addEventListener('change', () => { this.updateWsAddrPreview(this); });
@@ -57,9 +59,10 @@ export class Config {
     self.previewEl.textContent = wsAddress;
   }
 
-  updateWsAddrCurrent(self, manualTranslator) {
+  updateWsAddrCurrent(self, manualTranslator, demo) {
     self.translateServerCurrent.textContent = self.translateServerPreview.textContent;
-    manualTranslator.updateWebSocket(self.getWsAddr());
+    manualTranslator.updateWebSocket(self.getWsAddr(), manualTranslator);
+    demo.initWs(demo, self.getWsAddr());
   }
 
   getWsAddr() {

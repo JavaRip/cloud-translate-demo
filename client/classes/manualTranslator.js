@@ -8,34 +8,42 @@ export class ManualTranslator {
   init(webSocketAddress) {
     // init event listeners
     this.textSource.addEventListener('keyup', () => {
-      this.requestTranslation();
+      this.requestTranslation(this);
     });
 
     this.targetSelector.addEventListener('change', () => {
-      this.requestTranslation();
+      this.requestTranslation(this);
     });
 
     // init websocket address
     this.updateWebSocket(webSocketAddress);
   }
 
-  updateWebSocket(webSocketAddress) {
+  updateWebSocket(webSocketAddress, self = this) {
     try {
-      this.ws = new WebSocket(webSocketAddress);
-      this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
+      if (self.ws) self.ws.close();
+      self.ws = new WebSocket(webSocketAddress);
+
+      self.ws.addEventListener('message', (event) => {
+        self.receiveTranslation(event, self);
+      });
+
+      self.ws.addEventListener('open', () => {
+        console.log(`MT WS open at: ${self.ws.url}`);
+      });
     } catch {
       console.error(`invalid websocket address ${webSocketAddress}`);
     }
   }
 
-  requestTranslation() {
-    this.ws.send(JSON.stringify({
-      text: this.textSource.value,
-      target: this.targetSelector.value,
+  requestTranslation(self) {
+    self.ws.send(JSON.stringify({
+      text: self.textSource.value,
+      target: self.targetSelector.value,
     }));
   }
 
-  receiveTranslation(event) {
-    this.textDestination.textContent = JSON.parse(event.data).translation;
+  receiveTranslation(event, self) {
+    self.textDestination.textContent = JSON.parse(event.data).translation;
   }
 }

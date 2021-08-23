@@ -9,14 +9,11 @@ export class Demo {
     this.startButton = elements.startDemo;
     this.stopButton = elements.stopDemo;
     this.resetButton = elements.resetDemo;
-
-    // self used for async functions where 'this' will have changed
-    this.self = this;
   }
 
-  init(websocketAddr) {
-    this.wsAddr = websocketAddr;
-    this.initWs(this.self);
+  init(webSocketAddr) {
+    this.wsAddr = webSocketAddr;
+    this.initWs(this, webSocketAddr);
 
     for (const text of this.sourceText) {
       // create template in html instead of creating divs in javascript
@@ -33,19 +30,25 @@ export class Demo {
       this.translationsEl.appendChild(translationPlaceholder);
     }
 
-    this.startButton.addEventListener('click', () => { this.start(this.self); });
-    this.stopButton.addEventListener('click', () => { this.stop(this.self); });
-    this.resetButton.addEventListener('click', () => { this.reset(this.self); });
+    this.startButton.addEventListener('click', () => { this.start(this); });
+    this.stopButton.addEventListener('click', () => { this.stop(this); });
+    this.resetButton.addEventListener('click', () => { this.reset(this); });
   }
 
-  initWs(self) {
+  initWs(self, webSocketAddr) {
     try {
-      self.ws = new WebSocket(self.wsAddr);
+      if (self.ws) self.ws.close();
+      self.ws = new WebSocket(webSocketAddr);
+
       self.ws.addEventListener('message', (event) => {
         self.receiveTranslation(event, self);
       });
+
+      self.ws.addEventListener('open', () => {
+        console.log(`demo WS open at: ${self.ws.url}`);
+      });
     } catch {
-      console.error(`invalid web socket ${self.wsAddr}`);
+      console.error(`invalid web socket ${self.webSocketAddr}`);
     }
   }
 
@@ -69,7 +72,7 @@ export class Demo {
   }
 
   reset(self) {
-    self.initWs(self);
+    self.initWs(self, self.ws.url);
     self.resetCurrentTranslation(self);
     self.resetButton.style.display = 'none';
     self.startButton.style.display = '';

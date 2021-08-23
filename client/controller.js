@@ -14,12 +14,12 @@ const demo = new Demo(textList, els);
 
 const manualTranslator = new ManualTranslator(
   els.textToTranslate,
-  els.translatedText,
+  els.manualTranslatedText,
   els.manualLanguageSelector,
 );
 
 function init() {
-  config.init(languageCodes, manualTranslator);
+  config.init(languageCodes, manualTranslator, demo);
   manualTranslator.init(config.getWsAddr());
   demo.init(config.getWsAddr());
 }
