@@ -1,19 +1,22 @@
 export class ManualTranslator {
-  constructor(textSource, textDestination, targetSelector, webSocketAddress) {
+  constructor(textSource, textDestination, targetSelector) {
     this.textSource = textSource;
     this.textDestination = textDestination;
     this.targetSelector = targetSelector;
-    this.ws = new WebSocket(webSocketAddress);
-    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
   }
 
-  initLanguageSelector(languageCodes, languageSelector) {
+  init(languageCodes, languageSelector, webSocketAddress) {
+    // init language selector
     for (const language of languageCodes) {
       const optionEl = document.createElement('option');
       optionEl.value = language.code;
       optionEl.textContent = `${language.name} [${language.code}]`;
       languageSelector.appendChild(optionEl);
     }
+
+    // init websocket address
+    this.ws = new WebSocket(webSocketAddress);
+    this.ws.addEventListener('message', (event) => { this.receiveTranslation(event); });
   }
 
   updateWebSocket(webSocketAddress) {
